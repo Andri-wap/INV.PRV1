@@ -10,10 +10,42 @@
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        @media print { .no-print { display: none !important; } body.printing-label .main-content { display: none !important; } }
-        .print-only-label { display: none; }
-        @media print { body.printing-label .print-only-label { display: flex !important; justify-content: center; align-items: center; height: 100vh; } }
+
+body { 
+    font-family: 'Inter', sans-serif; 
+    /* GANTI URL DI BAWAH INI DENGAN FOTO PILIHANMU */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+/* Biar kartu statistik & tabel kelihatan transparan mewah (Glassmorphism) */
+.card, .stats, .navbar {
+    background-color: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.stat { background: transparent !important; }
+
+@media print { 
+    .no-print { display: none !important; } 
+    body.printing-label .main-content { display: none !important; } 
+    body { background-image: none !important; background-color: white !important; }
+}
+
+.print-only-label { display: none; }
+@media print { 
+    body.printing-label .print-only-label { 
+        display: flex !important; 
+        justify-content: center; 
+        align-items: center; 
+        height: 100vh; 
+    } 
+}
+
     </style>
 </head>
 <body class="bg-base-200 min-h-screen">
