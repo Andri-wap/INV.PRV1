@@ -76,26 +76,43 @@ body {
 
         <div class="max-w-6xl mx-auto p-4 md:p-10">
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 no-print">
-                <div class="stats shadow">
-                    <div class="stat">
-                        <div class="stat-title">Total Aset</div>
-                        <div id="totalAset" class="stat-value text-primary">0</div>
-                    </div>
-                </div>
-                <div class="stats shadow">
-                    <div class="stat">
-                        <div class="stat-title text-success font-bold">Unit Aktif</div>
-                        <div id="unitAktif" class="stat-value text-success">0</div>
-                    </div>
-                </div>
-                <div class="stats shadow">
-                    <div class="stat">
-                        <div class="stat-title">Maintenance</div>
-                        <div id="unitRusak" class="stat-value text-error">0</div>
-                    </div>
-                </div>
-            </div>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8 no-print">
+    <div class="stats shadow">
+        <div class="stat p-3">
+            <div class="stat-title text-xs">Total Aset</div>
+            <div id="totalAset" class="stat-value text-primary text-xl">0</div>
+        </div>
+    </div>
+    
+    <div class="stats shadow">
+        <div class="stat p-3">
+            <div class="stat-title text-xs text-info">Laptop</div>
+            <div id="totalLaptop" class="stat-value text-info text-xl">0</div>
+        </div>
+    </div>
+
+    <div class="stats shadow">
+        <div class="stat p-3">
+            <div class="stat-title text-xs text-warning">Komputer</div>
+            <div id="totalKomputer" class="stat-value text-warning text-xl">0</div>
+        </div>
+    </div>
+
+    <div class="stats shadow">
+        <div class="stat p-3">
+            <div class="stat-title text-xs text-success font-bold">Aktif</div>
+            <div id="unitAktif" class="stat-value text-success text-xl">0</div>
+        </div>
+    </div>
+
+    <div class="stats shadow">
+        <div class="stat p-3">
+            <div class="stat-title text-xs text-error font-bold">Rusak</div>
+            <div id="unitRusak" class="stat-value text-error text-xl">0</div>
+        </div>
+    </div>
+</div>
+
 
             <div class="flex flex-wrap gap-2 mb-6 no-print">
                 <button onclick="toggleForm()" class="btn btn-primary text-white">+ Tambah Aset</button>
@@ -210,15 +227,37 @@ body {
         }
 
         function updateStats(data) {
-            if(!data) return;
-            document.getElementById('totalAset').innerText = data.length;
-            const aktif = data.filter(i => {
-                const s = i.status ? i.status.toLowerCase() : '';
-                return s === 'active' || s === 'aktif';
-            }).length;
-            document.getElementById('unitAktif').innerText = aktif;
-            document.getElementById('unitRusak').innerText = data.length - aktif;
-        }
+    if (!data) return;
+
+    // 1. Total Semua Aset
+    document.getElementById('totalAset').innerText = data.length;
+
+    // 2. Hitung Laptop (Mencari kata 'laptop' di kolom device)
+    const jmlLaptop = data.filter(i => 
+        i.device && i.device.toLowerCase().includes('laptop')
+    ).length;
+    document.getElementById('totalLaptop').innerText = jmlLaptop;
+
+    // 3. Hitung Komputer (Mencari kata 'komputer' atau 'pc' di kolom device)
+    const jmlPC = data.filter(i => 
+        i.device && (i.device.toLowerCase().includes('komputer') || i.device.toLowerCase().includes('pc'))
+    ).length;
+    document.getElementById('totalKomputer').innerText = jmlPC;
+
+    // 4. Hitung Status Aktif
+    const aktif = data.filter(i => {
+        const s = i.status ? i.status.toLowerCase() : '';
+        return s === 'active' || s === 'aktif';
+    }).length;
+    document.getElementById('unitAktif').innerText = aktif;
+
+    // 5. Hitung Status Maintenance/Rusak
+    const rusak = data.filter(i => {
+        const s = i.status ? i.status.toLowerCase() : '';
+        return s === 'maintenance' || s === 'broken' || s === 'rusak';
+    }).length;
+    document.getElementById('unitRusak').innerText = rusak;
+}
 
         function getStatusClass(s) {
             const st = s?.toLowerCase();
