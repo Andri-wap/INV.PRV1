@@ -54,12 +54,8 @@
             </div>
 
             <div class="flex flex-wrap gap-2 mb-6 no-print">
-                <button onclick="toggleForm()" class="btn btn-primary text-white">
-                    + Tambah Aset
-                </button>
-                <button onclick="window.print()" class="btn btn-outline btn-secondary">
-                    Cetak Laporan
-                </button>
+                <button onclick="toggleForm()" class="btn btn-primary text-white">+ Tambah Aset</button>
+                <button onclick="window.print()" class="btn btn-outline btn-secondary">Cetak Laporan</button>
             </div>
 
             <div id="formContainer" class="card bg-base-100 shadow-xl mb-8 no-print hidden">
@@ -73,6 +69,10 @@
                         <div class="form-control">
                             <label class="label"><span class="label-text font-bold">User</span></label>
                             <input type="text" id="in_user" placeholder="Nama User" class="input input-bordered" required />
+                        </div>
+                        <div class="form-control">
+                            <label class="label"><span class="label-text font-bold">Departemen</span></label>
+                            <input type="text" id="in_dept" placeholder="Contoh: IT / HR / Produksi" class="input input-bordered" required />
                         </div>
                         <div class="form-control">
                             <label class="label"><span class="label-text font-bold">Perangkat</span></label>
@@ -91,14 +91,14 @@
                             </select>
                         </div>
                         <div class="form-control mt-9">
-                            <button type="submit" id="btnSimpan" class="btn btn-primary text-white">Simpan ke Cloud</button>
+                            <button type="submit" id="btnSimpan" class="btn btn-primary text-white w-full">Simpan ke Cloud</button>
                         </div>
                     </form>
                 </div>
             </div>
 
             <div class="mb-6 no-print">
-                <input type="text" id="searchInput" placeholder="Cari nama atau ID..." class="input input-bordered w-full max-w-xs focus:input-primary" />
+                <input type="text" id="searchInput" placeholder="Cari nama, ID, atau departemen..." class="input input-bordered w-full max-w-xs focus:input-primary" />
             </div>
 
             <div class="card bg-base-100 shadow-xl overflow-hidden">
@@ -108,13 +108,14 @@
                             <tr class="bg-base-300 text-center">
                                 <th>BARCODE</th>
                                 <th>USER</th>
+                                <th>DEPT</th>
                                 <th>DEVICE</th>
                                 <th>STATUS</th>
                                 <th class="no-print">AKSI</th>
                             </tr>
                         </thead>
                         <tbody id="inventoryBody">
-                            <tr><td colspan="5" class="text-center py-10">Memuat data...</td></tr>
+                            <tr><td colspan="6" class="text-center py-10">Memuat data...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -123,9 +124,8 @@
     </div>
 
     <script>
-        // --- KONFIGURASI SUPABASE ---
         const SUPABASE_URL = 'https://xsqabypdhudqwyeegfci.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhzcWFieXBkaHVkcXd5ZWVnZmNpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzNDExNTksImV4cCI6MjA5MTkxNzE1OX0.mv_XCnfHsmC5ve9rm-J0e0U_AxQ-GS6B5sxf_4a-NWM'; 
+        const SUPABASE_KEY = 'MASUKKAN_ANON_KEY_KAMU_DISINI'; 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         function toggleForm() {
@@ -134,21 +134,14 @@
 
         async function fetchData() {
             try {
-                const { data, error } = await supabaseClient
-                    .from('inventaris')
-                    .select('*')
-                    .order('created_at', { ascending: false });
-                
+                const { data, error } = await supabaseClient.from('inventaris').select('*').order('created_at', { ascending: false });
                 if (error) throw error;
-                
                 document.getElementById('statusConnection').innerText = "Terhubung";
                 document.getElementById('statusConnection').className = "badge badge-success text-white font-bold";
-                
                 renderTable(data);
-                updateStats(data); // <--- INI SUDAH DIPANGGIL DISINI
+                updateStats(data);
             } catch (err) {
                 console.error(err);
-                document.getElementById('statusConnection').innerText = "Error Koneksi";
             }
         }
 
@@ -160,10 +153,11 @@
                         <svg class="barcode mx-auto" jsbarcode-value="${item.id_aset}" jsbarcode-format="code128" jsbarcode-width="1" jsbarcode-height="30" jsbarcode-fontSize="12"></svg>
                     </td>
                     <td class="font-bold uppercase">${item.user || '-'}</td>
-                    <td>${item.device || item.devices || '-'}</td>
+                    <td class="font-semibold text-primary uppercase">${item.dept || '-'}</td>
+                    <td>${item.device || '-'}</td>
                     <td><div class="badge ${getStatusClass(item.status)} border-none text-white font-bold">${item.status || '-'}</div></td>
                     <td class="no-print flex gap-1 justify-center">
-                        <button onclick="printSingleLabel('${item.id_aset}', '${item.user}', '${item.device || item.devices}')" class="btn btn-ghost btn-xs text-primary">Label</button>
+                        <button onclick="printSingleLabel('${item.id_aset}', '${item.user}', '${item.device}')" class="btn btn-ghost btn-xs text-primary">Label</button>
                         <button onclick="deleteAsset('${item.id_aset}')" class="btn btn-ghost btn-xs text-error">Hapus</button>
                     </td>
                 </tr>
@@ -171,7 +165,6 @@
             JsBarcode(".barcode").init();
         }
 
-        // FUNGSI UPDATE STATISTIK
         function updateStats(data) {
             if(!data) return;
             document.getElementById('totalAset').innerText = data.length;
@@ -190,7 +183,6 @@
             return 'bg-error';
         }
 
-        // SIMPAN DATA (KOLOM SUDAH 'device')
         document.getElementById('assetForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btnSimpan');
@@ -200,6 +192,7 @@
             const newData = {
                 id_aset: document.getElementById('in_id').value,
                 user: document.getElementById('in_user').value,
+                dept: document.getElementById('in_dept').value, // KIRIM DATA DEPT
                 device: document.getElementById('in_device').value, 
                 specs: document.getElementById('in_specs').value,
                 status: document.getElementById('in_status').value
@@ -239,11 +232,14 @@
             setTimeout(() => { window.print(); document.body.classList.remove('printing-label'); }, 500);
         }
 
-        // CARI
         document.getElementById('searchInput').addEventListener('input', async (e) => {
             const kw = e.target.value.toLowerCase();
             const { data } = await supabaseClient.from('inventaris').select('*');
-            const filtered = data.filter(i => String(i.user).toLowerCase().includes(kw) || String(i.id_aset).toLowerCase().includes(kw));
+            const filtered = data.filter(i => 
+                String(i.user).toLowerCase().includes(kw) || 
+                String(i.id_aset).toLowerCase().includes(kw) ||
+                String(i.dept).toLowerCase().includes(kw)
+            );
             renderTable(filtered);
             updateStats(filtered);
         });
