@@ -64,16 +64,15 @@ body {
     <div id="print-label-area" class="print-only-label"></div>
 
     <div class="main-content hidden">
-        <div class="navbar bg-primary text-primary-content shadow-lg px-4 md:px-10 no-print">
-            <div class="flex-1">
-                <a class="text-xl font-bold tracking-tight uppercase text-white">IT-ASSET DASHBOARD</a>
-            </div>
-            <div class="flex-none">
-                <div id="statusConnection" class="badge badge-outline text-white">Menghubungkan...</div>
-
-                <div class="flex-none flex items- center gap-2"> text-white">Menghubungkan. . </div> btn-xs text-white underline italic">Logout</button>
-            </div>
+    <div class="navbar bg-primary text-primary-content shadow-lg px-4 md:px-10 no-print">
+        <div class="flex-1">
+            <a class="text-xl font-bold tracking-tight uppercase text-white">IT-ASSET DASHBOARD</a>
         </div>
+        <div class="flex-none flex items-center gap-3">
+            <div id="statusConnection" class="badge badge-outline text-white">Terhubung</div>
+            <button onclick="handleLogout()" class="btn btn-error btn-xs text-white font-bold px-4">LOGOUT</button>
+        </div>
+    </div>
 
         <div class="max-w-6xl mx-auto p-4 md:p-10">
             
