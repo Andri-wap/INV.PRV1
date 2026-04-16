@@ -3,38 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IT Inventory & Barcode System</title>
-    
+    <title>IT Inventory Manager Pro</title>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
-
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; }
-
-        /* Pengaturan khusus saat Cetak/Print */
-        @media print {
-            .no-print, .navbar, .btn, #searchInput, .stats, footer {
-                display: none !important;
-            }
-            .print-area {
-                width: 100% !important;
-                margin: 0 !important;
-                padding: 0 !important;
-            }
-            table { border: 1px solid #e5e7eb; }
-            th, td { border: 1px solid #e5e7eb; padding: 8px !important; }
-        }
+        @media print { .no-print { display: none !important; } .print-area { width: 100% !important; } }
     </style>
 </head>
 <body class="bg-base-200 min-h-screen">
 
     <div class="navbar bg-primary text-primary-content shadow-lg px-4 md:px-10 no-print">
         <div class="flex-1">
-            <a class="text-xl font-bold tracking-tight uppercase">IT Inventory PRV1</a>
+            <a class="text-xl font-bold tracking-tight uppercase">IT-ASSET DASHBOARD</a>
         </div>
         <div class="flex-none gap-2">
             <div id="statusConnection" class="badge badge-outline">Menghubungkan...</div>
@@ -42,150 +26,171 @@
     </div>
 
     <div class="max-w-6xl mx-auto p-4 md:p-10 print-area">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 no-print">
-            <div class="stats shadow">
-                <div class="stat">
-                    <div class="stat-title">Total Aset</div>
-                    <div id="totalAset" class="stat-value text-primary">0</div>
-                </div>
-            </div>
-            <div class="stats shadow">
-                <div class="stat">
-                    <div class="stat-title">Unit Aktif</div>
-                    <div id="unitAktif" class="stat-value text-success">0</div>
-                </div>
-            </div>
-            <div class="stats shadow">
-                <div class="stat">
-                    <div class="stat-title">Maintenance</div>
-                    <div id="unitRusak" class="stat-value text-error">0</div>
-                </div>
+        
+        <div class="card bg-base-100 shadow-xl mb-8 no-print">
+            <div class="card-body">
+                <h2 class="card-title text-primary mb-4">Input Aset Baru</h2>
+                <form id="assetForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="form-control">
+                        <label class="label"><span class="label-text font-bold">ID Aset</span></label>
+                        <input type="text" id="in_id" placeholder="Contoh: 101 atau PC-01" class="input input-bordered w-full" required />
+                    </div>
+                    <div class="form-control">
+                        <label class="label"><span class="label-text font-bold">User / Pemegang</span></label>
+                        <input type="text" id="in_user" placeholder="Nama Lengkap" class="input input-bordered w-full" required />
+                    </div>
+                    <div class="form-control">
+                        <label class="label"><span class="label-text font-bold">Perangkat</span></label>
+                        <input type="text" id="in_device" placeholder="Contoh: Laptop HP" class="input input-bordered w-full" required />
+                    </div>
+                    <div class="form-control">
+                        <label class="label"><span class="label-text font-bold">Spesifikasi</span></label>
+                        <input type="text" id="in_specs" placeholder="RAM, CPU, SSD" class="input input-bordered w-full" />
+                    </div>
+                    <div class="form-control">
+                        <label class="label"><span class="label-text font-bold">Status</span></label>
+                        <select id="in_status" class="select select-bordered w-full">
+                            <option value="Active">Active / Aktif</option>
+                            <option value="Maintenance">Maintenance</option>
+                            <option value="Broken">Broken / Rusak</option>
+                        </select>
+                    </div>
+                    <div class="form-control mt-9">
+                        <button type="submit" class="btn btn-primary w-full">Simpan ke Cloud</button>
+                    </div>
+                </form>
             </div>
         </div>
 
-        <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4 no-print">
-            <input type="text" id="searchInput" placeholder="Cari Nama User atau ID..." class="input input-bordered w-full md:w-96 focus:input-primary" />
-            <div class="flex gap-2">
-                <button onclick="fetchData()" class="btn btn-square btn-outline">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" /></svg>
-                </button>
-                <button onclick="window.print()" class="btn btn-secondary">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-1"><path stroke-linecap="round" stroke-linejoin="round" d="M6.72 13.821V7.5a3.75 3.75 0 017.5 0v6.321m-10.5 0h10.5m-10.5 0l-1.1-9.408a1.125 1.125 0 011.12-1.242h12.72a1.125 1.125 0 011.12 1.242l-1.1 9.408m-13.5 0h13.5" /></svg>
-                    Cetak Laporan
+        <div class="flex flex-col md:flex-row justify-between items-end mb-6 gap-4 no-print">
+            <div class="stats shadow bg-base-100 w-full md:w-auto">
+                <div class="stat py-2 px-4">
+                    <div class="stat-title text-xs">Total</div>
+                    <div id="totalAset" class="stat-value text-lg text-primary">0</div>
+                </div>
+            </div>
+            <div class="flex gap-2 w-full md:w-auto">
+                <input type="text" id="searchInput" placeholder="Cari aset..." class="input input-bordered flex-grow focus:input-primary" />
+                <button onclick="window.print()" class="btn btn-square btn-outline border-slate-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6.72 13.821V7.5a3.75 3.75 0 017.5 0v6.321m-10.5 0h10.5m-10.5 0l-1.1-9.408a1.125 1.125 0 011.12-1.242h12.72a1.125 1.125 0 011.12 1.242l-1.1 9.408m-13.5 0h13.5" /></svg>
                 </button>
             </div>
         </div>
 
         <div class="card bg-base-100 shadow-xl overflow-hidden">
             <div class="overflow-x-auto">
-                <table class="table table-zebra w-full" id="mainTable">
+                <table class="table table-zebra w-full">
                     <thead>
                         <tr class="bg-base-300">
-                            <th class="w-40 text-center">ID ASET (BARCODE)</th>
-                            <th>USER / PEMEGANG</th>
-                            <th>PERANGKAT</th>
-                            <th>SPESIFIKASI</th>
+                            <th class="w-32 text-center">ID / BARCODE</th>
+                            <th>USER</th>
+                            <th>DEVICE</th>
+                            <th>SPECS</th>
                             <th>STATUS</th>
+                            <th class="no-print">AKSI</th>
                         </tr>
                     </thead>
                     <tbody id="inventoryBody">
-                        <tr><td colspan="5" class="text-center py-10">Memuat data inventaris...</td></tr>
+                        <tr><td colspan="6" class="text-center py-10">Memuat data...</td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
-        
-        <footer class="mt-10 text-center text-sm opacity-50 no-print">
-            &copy; 2026 Database Inventaris Komputer - Andri Setiawan
-        </footer>
     </div>
 
     <script>
-        // --- KONFIGURASI SUPABASE (GANTI DENGAN DATA KAMU) ---
-        const SUPABASE_URL = 'https://xsqabypdhudqwyeegfci.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhzcWFieXBkaHVkcXd5ZWVnZmNpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzNDExNTksImV4cCI6MjA5MTkxNzE1OX0.mv_XCnfHsmC5ve9rm-J0e0U_AxQ-GS6B5sxf_4a-NWM';
-        // -----------------------------------------------------
-
+        const SUPABASE_URL = 'URL_SUPABASE_KAMU';
+        const SUPABASE_KEY = 'KEY_ANON_KAMU';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+        // AMBIL DATA
         async function fetchData() {
-            const statusNode = document.getElementById('statusConnection');
-            statusNode.innerText = "Memuat...";
-            
             try {
-                const { data, error } = await supabaseClient
-                    .from('inventaris')
-                    .select('*')
-                    .order('id_aset', { ascending: true }); // Mengurutkan dari ID terkecil
-
+                const { data, error } = await supabaseClient.from('inventaris').select('*').order('id_aset', { ascending: true });
                 if (error) throw error;
-
-                statusNode.innerText = "Terhubung";
-                statusNode.className = "badge badge-success text-white";
+                document.getElementById('statusConnection').innerText = "Terhubung";
+                document.getElementById('statusConnection').className = "badge badge-success text-white";
                 renderTable(data);
                 updateStats(data);
             } catch (err) {
                 console.error(err);
-                statusNode.innerText = "Error Koneksi";
-                statusNode.className = "badge badge-error text-white";
+                document.getElementById('statusConnection').innerText = "Koneksi Terputus";
             }
         }
 
+        // RENDER TABEL
         function renderTable(data) {
             const tbody = document.getElementById('inventoryBody');
-            if (data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-10">Data kosong.</td></tr>`;
-                return;
-            }
-
             tbody.innerHTML = data.map(item => `
                 <tr class="hover">
-                    <td class="text-center bg-white p-2">
-                        <svg class="barcode mx-auto"
-                            jsbarcode-value="${item.id_aset}"
-                            jsbarcode-format="code128"
-                            jsbarcode-width="1.2"
-                            jsbarcode-height="35"
-                            jsbarcode-fontSize="14">
-                        </svg>
+                    <td class="text-center p-2">
+                        <svg class="barcode mx-auto" jsbarcode-value="${item.id_aset}" jsbarcode-format="code128" jsbarcode-width="1" jsbarcode-height="30" jsbarcode-fontSize="12"></svg>
                     </td>
                     <td class="font-bold uppercase">${item.user || '-'}</td>
                     <td>${item.devices || item.device || '-'}</td>
-                    <td><div class="text-xs opacity-70 max-w-xs">${item.specs || '-'}</div></td>
-                    <td>
-                        <div class="badge ${getStatusClass(item.status)} border-none text-white font-semibold">
-                            ${item.status || 'Unknown'}
-                        </div>
+                    <td><div class="text-[10px] opacity-70">${item.specs || '-'}</div></td>
+                    <td><div class="badge ${getStatusClass(item.status)} border-none text-white text-[10px]">${item.status || '-'}</div></td>
+                    <td class="no-print">
+                        <button onclick="deleteAsset('${item.id_aset}')" class="btn btn-ghost btn-xs text-error">Hapus</button>
                     </td>
                 </tr>
             `).join('');
-
-            // PENTING: Render gambar barcode setelah HTML dibuat
             JsBarcode(".barcode").init();
         }
 
-        function getStatusClass(status) {
-            const s = status ? status.toLowerCase() : '';
-            if (s === 'active' || s === 'aktif') return 'bg-success';
-            if (s === 'maintenance' || s === 'perbaikan') return 'bg-warning text-black';
-            if (s === 'broken' || s === 'rusak') return 'bg-error';
+        // SIMPAN DATA BARU
+        document.getElementById('assetForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            btn.innerText = "Menyimpan...";
+            btn.disabled = true;
+
+            const newData = {
+                id_aset: document.getElementById('in_id').value,
+                user: document.getElementById('in_user').value,
+                devices: document.getElementById('in_device').value, // Sesuaikan 'devices' atau 'device'
+                specs: document.getElementById('in_specs').value,
+                status: document.getElementById('in_status').value
+            };
+
+            const { error } = await supabaseClient.from('inventaris').insert([newData]);
+            
+            if (error) {
+                alert("Gagal simpan: " + error.message);
+            } else {
+                e.target.reset();
+                fetchData();
+            }
+            btn.innerText = "Simpan ke Cloud";
+            btn.disabled = false;
+        });
+
+        // HAPUS DATA
+        async function deleteAsset(id) {
+            if (confirm(`Yakin hapus aset ID: ${id}?`)) {
+                const { error } = await supabaseClient.from('inventaris').delete().eq('id_aset', id);
+                if (error) alert("Gagal hapus");
+                else fetchData();
+            }
+        }
+
+        function getStatusClass(s) {
+            const st = s?.toLowerCase();
+            if (st === 'active' || st === 'aktif') return 'bg-success';
+            if (st === 'maintenance') return 'bg-warning text-black';
+            if (st === 'broken' || st === 'rusak') return 'bg-error';
             return 'bg-slate-400';
         }
 
         function updateStats(data) {
             document.getElementById('totalAset').innerText = data.length;
-            document.getElementById('unitAktif').innerText = data.filter(i => i.status?.toLowerCase() === 'active' || i.status?.toLowerCase() === 'aktif').length;
-            document.getElementById('unitRusak').innerText = data.filter(i => i.status?.toLowerCase() !== 'active' && i.status?.toLowerCase() !== 'aktif').length;
         }
 
-        // Fitur Pencarian
+        // PENCARIAN
         document.getElementById('searchInput').addEventListener('input', async (e) => {
-            const keyword = e.target.value.toLowerCase();
+            const kw = e.target.value.toLowerCase();
             const { data } = await supabaseClient.from('inventaris').select('*');
-            const filtered = data.filter(item => 
-                (item.user && item.user.toLowerCase().includes(keyword)) || 
-                (item.id_aset && String(item.id_aset).toLowerCase().includes(keyword))
-            );
+            const filtered = data.filter(i => String(i.user).toLowerCase().includes(kw) || String(i.id_aset).toLowerCase().includes(kw));
             renderTable(filtered);
         });
 
