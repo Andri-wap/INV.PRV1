@@ -11,24 +11,9 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; }
-        
-        /* CSS KHUSUS PRINT */
-        @media print {
-            .no-print { display: none !important; }
-            body.printing-label .print-only-label { display: block !important; }
-            body.printing-label .main-content { display: none !important; }
-            .print-area { width: 100% !important; margin: 0 !important; }
-        }
-
+        @media print { .no-print { display: none !important; } body.printing-label .main-content { display: none !important; } }
         .print-only-label { display: none; }
-        @media print {
-            body.printing-label .print-only-label {
-                display: flex !important;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-            }
-        }
+        @media print { body.printing-label .print-only-label { display: flex !important; justify-content: center; align-items: center; height: 100vh; } }
     </style>
 </head>
 <body class="bg-base-200 min-h-screen">
@@ -38,84 +23,98 @@
     <div class="main-content">
         <div class="navbar bg-primary text-primary-content shadow-lg px-4 md:px-10 no-print">
             <div class="flex-1">
-                <a class="text-xl font-bold tracking-tight uppercase">IT-ASSET DASHBOARD</a>
+                <a class="text-xl font-bold tracking-tight uppercase text-white">IT-ASSET DASHBOARD</a>
             </div>
             <div class="flex-none">
-                <div id="statusConnection" class="badge badge-outline">Menghubungkan...</div>
+                <div id="statusConnection" class="badge badge-outline text-white">Menghubungkan...</div>
             </div>
         </div>
 
-        <div class="max-w-6xl mx-auto p-4 md:p-10 print-area">
+        <div class="max-w-6xl mx-auto p-4 md:p-10">
             
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 no-print">
+                <div class="stats shadow">
+                    <div class="stat">
+                        <div class="stat-title">Total Aset</div>
+                        <div id="totalAset" class="stat-value text-primary">0</div>
+                    </div>
+                </div>
+                <div class="stats shadow">
+                    <div class="stat">
+                        <div class="stat-title text-success font-bold">Unit Aktif</div>
+                        <div id="unitAktif" class="stat-value text-success">0</div>
+                    </div>
+                </div>
+                <div class="stats shadow">
+                    <div class="stat">
+                        <div class="stat-title">Maintenance</div>
+                        <div id="unitRusak" class="stat-value text-error">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mb-6 no-print">
+                <button onclick="toggleForm()" class="btn btn-primary text-white">
+                    + Tambah Aset
+                </button>
+                <button onclick="window.print()" class="btn btn-outline btn-secondary">
+                    Cetak Laporan
+                </button>
+            </div>
+
             <div id="formContainer" class="card bg-base-100 shadow-xl mb-8 no-print hidden">
                 <div class="card-body">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="card-title text-primary">Input Aset Baru</h2>
-                        <button onclick="toggleForm()" class="btn btn-ghost btn-sm">Tutup</button>
-                    </div>
+                    <h2 class="card-title text-primary">Input Aset Baru</h2>
                     <form id="assetForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         <div class="form-control">
                             <label class="label"><span class="label-text font-bold">ID Aset</span></label>
-                            <input type="text" id="in_id" placeholder="PC-01" class="input input-bordered w-full" required />
+                            <input type="text" id="in_id" placeholder="PC-01" class="input input-bordered" required />
                         </div>
                         <div class="form-control">
-                            <label class="label"><span class="label-text font-bold">User / Pemegang</span></label>
-                            <input type="text" id="in_user" placeholder="Nama User" class="input input-bordered w-full" required />
+                            <label class="label"><span class="label-text font-bold">User</span></label>
+                            <input type="text" id="in_user" placeholder="Nama User" class="input input-bordered" required />
                         </div>
                         <div class="form-control">
                             <label class="label"><span class="label-text font-bold">Perangkat</span></label>
-                            <input type="text" id="in_device" placeholder="Laptop / PC" class="input input-bordered w-full" required />
+                            <input type="text" id="in_device" placeholder="Laptop/PC" class="input input-bordered" required />
                         </div>
                         <div class="form-control">
                             <label class="label"><span class="label-text font-bold">Spesifikasi</span></label>
-                            <input type="text" id="in_specs" placeholder="RAM, CPU, dll" class="input input-bordered w-full" />
+                            <input type="text" id="in_specs" placeholder="RAM, CPU" class="input input-bordered" />
                         </div>
                         <div class="form-control">
                             <label class="label"><span class="label-text font-bold">Status</span></label>
-                            <select id="in_status" class="select select-bordered w-full">
+                            <select id="in_status" class="select select-bordered">
                                 <option value="Active">Active / Aktif</option>
                                 <option value="Maintenance">Maintenance</option>
                                 <option value="Broken">Broken / Rusak</option>
                             </select>
                         </div>
                         <div class="form-control mt-9">
-                            <button type="submit" id="btnSimpan" class="btn btn-primary w-full">Simpan ke Cloud</button>
+                            <button type="submit" id="btnSimpan" class="btn btn-primary text-white">Simpan ke Cloud</button>
                         </div>
                     </form>
                 </div>
             </div>
 
-            <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4 no-print">
-                <div class="flex gap-2 w-full md:w-auto">
-                    <button onclick="toggleForm()" class="btn btn-primary shadow">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-1"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
-                        Tambah Aset
-                    </button>
-                    <button onclick="window.print()" class="btn btn-outline btn-secondary shadow">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-1"><path stroke-linecap="round" stroke-linejoin="round" d="M6.72 13.821V7.5a3.75 3.75 0 017.5 0v6.321m-10.5 0h10.5m-10.5 0l-1.1-9.408a1.125 1.125 0 011.12-1.242h12.72a1.125 1.125 0 011.12 1.242l-1.1 9.408m-13.5 0h13.5" /></svg>
-                        Cetak Laporan
-                    </button>
-                </div>
-                <div class="relative w-full md:w-80">
-                    <input type="text" id="searchInput" placeholder="Cari nama atau ID..." class="input input-bordered w-full focus:input-primary" />
-                </div>
+            <div class="mb-6 no-print">
+                <input type="text" id="searchInput" placeholder="Cari nama atau ID..." class="input input-bordered w-full max-w-xs focus:input-primary" />
             </div>
 
             <div class="card bg-base-100 shadow-xl overflow-hidden">
                 <div class="overflow-x-auto">
-                    <table class="table table-zebra w-full" id="inventoryTable">
+                    <table class="table table-zebra w-full">
                         <thead>
                             <tr class="bg-base-300 text-center">
-                                <th class="w-32">BARCODE</th>
+                                <th>BARCODE</th>
                                 <th>USER</th>
                                 <th>DEVICE</th>
-                                <th>SPECS</th>
                                 <th>STATUS</th>
                                 <th class="no-print">AKSI</th>
                             </tr>
                         </thead>
                         <tbody id="inventoryBody">
-                            <tr><td colspan="6" class="text-center py-10">Menghubungkan ke database...</td></tr>
+                            <tr><td colspan="5" class="text-center py-10">Memuat data...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -124,11 +123,9 @@
     </div>
 
     <script>
-        // --- GANTI DENGAN DATA SUPABASE KAMU ---
+        // --- KONFIGURASI SUPABASE ---
         const SUPABASE_URL = 'https://xsqabypdhudqwyeegfci.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhzcWFieXBkaHVkcXd5ZWVnZmNpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzNDExNTksImV4cCI6MjA5MTkxNzE1OX0.mv_XCnfHsmC5ve9rm-J0e0U_AxQ-GS6B5sxf_4a-NWM';
-        // --------------------------------------
-
+        const SUPABASE_KEY = 'MASUKKAN_ANON_KEY_KAMU_DISINI'; 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         function toggleForm() {
@@ -140,56 +137,60 @@
                 const { data, error } = await supabaseClient
                     .from('inventaris')
                     .select('*')
-                    .order('id_aset', { ascending: true });
+                    .order('created_at', { ascending: false });
                 
                 if (error) throw error;
                 
                 document.getElementById('statusConnection').innerText = "Terhubung";
                 document.getElementById('statusConnection').className = "badge badge-success text-white font-bold";
+                
                 renderTable(data);
+                updateStats(data); // <--- INI SUDAH DIPANGGIL DISINI
             } catch (err) {
                 console.error(err);
-                document.getElementById('statusConnection').innerText = "Gagal Konek";
-                document.getElementById('statusConnection').className = "badge badge-error text-white font-bold";
+                document.getElementById('statusConnection').innerText = "Error Koneksi";
             }
         }
 
         function renderTable(data) {
             const tbody = document.getElementById('inventoryBody');
-            if (data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-10">Data Kosong.</td></tr>`;
-                return;
-            }
-
             tbody.innerHTML = data.map(item => `
-                <tr class="hover">
-                    <td class="text-center p-2 bg-white">
+                <tr class="hover text-center">
+                    <td class="p-2 bg-white">
                         <svg class="barcode mx-auto" jsbarcode-value="${item.id_aset}" jsbarcode-format="code128" jsbarcode-width="1" jsbarcode-height="30" jsbarcode-fontSize="12"></svg>
                     </td>
                     <td class="font-bold uppercase">${item.user || '-'}</td>
                     <td>${item.device || item.devices || '-'}</td>
-                    <td class="text-[10px] opacity-70">${item.specs || '-'}</td>
-                    <td><div class="badge ${getStatusClass(item.status)} border-none text-white text-[10px] font-bold">${item.status || '-'}</div></td>
-                    <td class="no-print">
-                        <div class="flex gap-1 justify-center">
-                            <button onclick="printSingleLabel('${item.id_aset}', '${item.user}', '${item.device || item.devices}')" class="btn btn-ghost btn-xs text-primary">Label</button>
-                            <button onclick="deleteAsset('${item.id_aset}')" class="btn btn-ghost btn-xs text-error">Hapus</button>
-                        </div>
+                    <td><div class="badge ${getStatusClass(item.status)} border-none text-white font-bold">${item.status || '-'}</div></td>
+                    <td class="no-print flex gap-1 justify-center">
+                        <button onclick="printSingleLabel('${item.id_aset}', '${item.user}', '${item.device || item.devices}')" class="btn btn-ghost btn-xs text-primary">Label</button>
+                        <button onclick="deleteAsset('${item.id_aset}')" class="btn btn-ghost btn-xs text-error">Hapus</button>
                     </td>
                 </tr>
             `).join('');
             JsBarcode(".barcode").init();
         }
 
+        // FUNGSI UPDATE STATISTIK
+        function updateStats(data) {
+            if(!data) return;
+            document.getElementById('totalAset').innerText = data.length;
+            const aktif = data.filter(i => {
+                const s = i.status ? i.status.toLowerCase() : '';
+                return s === 'active' || s === 'aktif';
+            }).length;
+            document.getElementById('unitAktif').innerText = aktif;
+            document.getElementById('unitRusak').innerText = data.length - aktif;
+        }
+
         function getStatusClass(s) {
             const st = s?.toLowerCase();
             if (st === 'active' || st === 'aktif') return 'bg-success';
             if (st === 'maintenance') return 'bg-warning text-black';
-            if (st === 'broken' || st === 'rusak') return 'bg-error';
-            return 'bg-slate-400';
+            return 'bg-error';
         }
 
-        // FUNGSI SIMPAN
+        // SIMPAN DATA (KOLOM SUDAH 'device')
         document.getElementById('assetForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btnSimpan');
@@ -199,7 +200,7 @@
             const newData = {
                 id_aset: document.getElementById('in_id').value,
                 user: document.getElementById('in_user').value,
-                device: document.getElementById('in_device').value, // Menggunakan 'device' sesuai db kamu
+                device: document.getElementById('in_device').value, 
                 specs: document.getElementById('in_specs').value,
                 status: document.getElementById('in_status').value
             };
@@ -207,7 +208,7 @@
             const { error } = await supabaseClient.from('inventaris').insert([newData]);
             
             if (error) {
-                alert("Gagal simpan: " + error.message);
+                alert("Gagal: " + error.message);
             } else {
                 e.target.reset();
                 fetchData();
@@ -217,64 +218,37 @@
             btn.disabled = false;
         });
 
-        // FUNGSI HAPUS
         async function deleteAsset(id) {
-            if (confirm(`Yakin ingin menghapus aset ${id}?`)) {
-                const { error } = await supabaseClient.from('inventaris').delete().eq('id_aset', id);
-                if (error) alert("Gagal hapus data!");
-                else fetchData();
+            if (confirm(`Hapus aset ${id}?`)) {
+                await supabaseClient.from('inventaris').delete().eq('id_aset', id);
+                fetchData();
             }
         }
 
-        // FUNGSI PRINT LABEL SATUAN
         function printSingleLabel(id, user, device) {
             const printArea = document.getElementById('print-label-area');
             printArea.innerHTML = `
-                <div style="padding: 15px; border: 2px solid #000; display: inline-block; text-align: center; background: white;">
-                    <div style="font-weight: bold; font-size: 16px; margin-bottom: 5px; font-family: sans-serif;">IT ASSET: ${device}</div>
+                <div style="padding: 15px; border: 2px solid #000; text-align: center; background: white;">
+                    <div style="font-weight: bold; font-family: sans-serif;">ASSET: ${device}</div>
                     <svg id="singleBarcode"></svg>
-                    <div style="font-size: 14px; margin-top: 5px; font-family: sans-serif;">User: <b>${user}</b></div>
+                    <div style="font-family: sans-serif;">User: ${user}</div>
                 </div>
             `;
-            JsBarcode("#singleBarcode", id, { format: "code128", width: 2, height: 60, displayValue: true });
-            
+            JsBarcode("#singleBarcode", id, { format: "code128", width: 2, height: 60 });
             document.body.classList.add('printing-label');
-            setTimeout(() => {
-                window.print();
-                document.body.classList.remove('printing-label');
-            }, 500);
+            setTimeout(() => { window.print(); document.body.classList.remove('printing-label'); }, 500);
         }
 
-        // FITUR CARI
+        // CARI
         document.getElementById('searchInput').addEventListener('input', async (e) => {
             const kw = e.target.value.toLowerCase();
             const { data } = await supabaseClient.from('inventaris').select('*');
-            const filtered = data.filter(i => 
-                String(i.user).toLowerCase().includes(kw) || 
-                String(i.id_aset).toLowerCase().includes(kw) ||
-                String(i.device || i.devices).toLowerCase().includes(kw)
-            );
+            const filtered = data.filter(i => String(i.user).toLowerCase().includes(kw) || String(i.id_aset).toLowerCase().includes(kw));
             renderTable(filtered);
+            updateStats(filtered);
         });
 
         fetchData();
-
-        function updateStats(data) {
-    // 1. Total Aset
-    document.getElementById('totalAset').innerText = data.length;
-    
-    // 2. Hitung yang statusnya 'Active' atau 'Aktif'
-    const aktif = data.filter(i => {
-        const s = i.status ? i.status.toLowerCase() : '';
-        return s === 'active' || s === 'aktif';
-    }).length;
-    
-    document.getElementById('unitAktif').innerText = aktif;
-    
-    // 3. Sisanya (Total dikurang yang aktif)
-    document.getElementById('unitRusak').innerText = data.length - aktif;
-}
-
     </script>
 </body>
 </html>
