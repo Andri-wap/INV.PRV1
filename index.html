@@ -49,16 +49,29 @@ body {
     </style>
 </head>
 <body class="bg-base-200 min-h-screen">
+    <div id="loginSection" class="flex items-center justify-center min-h-screen no-print">
+    <div class="card w-96 bg-white shadow-xl p-8 border border-primary/20">
+        <h2 class="text-2xl font-bold text-center mb-6 text-primary">IT ASSET LOGIN</h2>
+        <div class="form-control gap-4">
+            <input type="email" id="loginEmail" placeholder="Email Admin" class="input input-bordered focus:input-primary" />
+            <input type="password" id="loginPassword" placeholder="Password" class="input input-bordered focus:input-primary" />
+            <button onclick="handleLogin()" id="btnLogin" class="btn btn-primary text-white">Masuk Sistem</button>
+        </div>
+        <p id="loginError" class="text-error text-sm mt-4 text-center hidden font-semibold"></p>
+    </div>
+    </div>
 
     <div id="print-label-area" class="print-only-label"></div>
 
-    <div class="main-content">
+    <div class="main-content hidden">
         <div class="navbar bg-primary text-primary-content shadow-lg px-4 md:px-10 no-print">
             <div class="flex-1">
                 <a class="text-xl font-bold tracking-tight uppercase text-white">IT-ASSET DASHBOARD</a>
             </div>
             <div class="flex-none">
                 <div id="statusConnection" class="badge badge-outline text-white">Menghubungkan...</div>
+
+                <div class="flex-none flex items- center gap-2"> text-white">Menghubungkan. . </div> btn-xs text-white underline italic">Logout</button>
             </div>
         </div>
 
@@ -276,7 +289,54 @@ body {
             updateStats(filtered);
         });
 
-        fetchData();
+        // 1. Fungsi untuk cek status login setiap kali web dibuka
+async function checkUser() {
+    const { data: { user } } = await supabaseClient.auth.getUser();
+    const loginSec = document.getElementById('loginSection');
+    const mainContent = document.querySelector('.main-content');
+
+    if (user) {
+        // Jika sudah login: sembunyikan kotak login, munculkan dashboard
+        loginSec.classList.add('hidden');
+        mainContent.classList.remove('hidden');
+        fetchData(); // Baru ambil data dari database
+    } else {
+        // Jika belum login: munculkan kotak login, sembunyikan dashboard
+        loginSec.classList.remove('hidden');
+        mainContent.classList.add('hidden');
+    }
+}
+
+// 2. Fungsi untuk menangani tombol "Masuk Sistem"
+async function handleLogin() {
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+    const btn = document.getElementById('btnLogin');
+    const err = document.getElementById('loginError');
+
+    btn.innerText = "Memverifikasi...";
+    err.classList.add('hidden');
+
+    const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+    if (error) {
+        err.innerText = "Email atau Password Salah!";
+        err.classList.remove('hidden');
+        btn.innerText = "Masuk Sistem";
+    } else {
+        checkUser(); // Login sukses, cek ulang status user
+    }
+}
+
+// 3. Fungsi untuk tombol Logout
+async function handleLogout() {
+    await supabaseClient.auth.signOut();
+    location.reload(); // Refresh halaman untuk balik ke form login
+}
+
+// JALANKAN INI SEBAGAI PERINTAH UTAMA
+checkUser();
+
     </script>
 </body>
 </html>
