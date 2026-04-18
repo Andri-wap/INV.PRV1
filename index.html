@@ -57,7 +57,13 @@ body.role-viewer [onclick*="deleteAsset"],
 body.role-viewer .aksi-kolom { 
     display: none !important; 
 }
-
+.editable:focus {
+    background-color: rgba(100, 26, 230, 0.1); /* Warna highlight ungu tipis pas diklik */
+    outline: 2px solid #641ae6;
+    border-radius: 4px;
+    color: white;
+}
+        
     </style>
 </head>
 <body class="bg-base-200 min-h-screen">
