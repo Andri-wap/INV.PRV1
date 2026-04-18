@@ -49,6 +49,14 @@ body {
         height: 100vh; 
     } 
 }
+        /* Sembunyikan tombol-tombol admin untuk role-viewer */
+body.role-viewer .btn-hapus, 
+body.role-viewer .btn-tambah, 
+body.role-viewer .btn-import,
+body.role-viewer [onclick*="deleteAsset"],
+body.role-viewer .aksi-kolom { 
+    display: none !important; 
+}
 
     </style>
 </head>
@@ -221,9 +229,9 @@ body {
                     <td class="font-semibold text-primary uppercase">${item.dept || '-'}</td>
                     <td>${item.device || '-'}</td>
                     <td><div class="badge ${getStatusClass(item.status)} border-none text-white font-bold">${item.status || '-'}</div></td>
-                    <td class="no-print flex gap-1 justify-center">
+                    <td class="no-print aksi-kolom flex gap-1 justify-center">
                         <button onclick="printSingleLabel('${item.id_aset}', '${item.user}', '${item.device}')" class="btn btn-ghost btn-xs text-primary">Label</button>
-                        <button onclick="deleteAsset('${item.id_aset}')" class="btn btn-ghost btn-xs text-error">Hapus</button>
+                        <button onclick="deleteAsset('${item.id_aset}')" class="btn btn-ghost btn-xs text-error btn-hapus">Hapus</button>
                     </td>
                 </tr>
             `).join('');
@@ -336,16 +344,24 @@ async function checkUser() {
     const { data: { user } } = await supabaseClient.auth.getUser();
     const loginSec = document.getElementById('loginSection');
     const mainContent = document.querySelector('.main-content');
+    
+    // 1. Selalu tampilkan dashboard agar "tamu" bisa lihat data
+    loginSec.classList.add('hidden');
+    mainContent.classList.remove('hidden');
+    fetchData();
+
+    // 2. Cek status Admin
+    const btnAksi = document.querySelectorAll('.btn-hapus, .btn-tambah, .btn-import, .no-print button:last-child');
+    const loginButton = document.querySelector('#loginSection button'); // Tombol Login di kotak awal
 
     if (user) {
-        // Jika sudah login: sembunyikan kotak login, munculkan dashboard
-        loginSec.classList.add('hidden');
-        mainContent.classList.remove('hidden');
-        fetchData(); // Baru ambil data dari database
+        // Jika Login (Admin): Munculkan semua tombol sakti
+        document.body.classList.remove('role-viewer');
+        console.log("Welcome Admin:", user.email);
     } else {
-        // Jika belum login: munculkan kotak login, sembunyikan dashboard
-        loginSec.classList.remove('hidden');
-        mainContent.classList.add('hidden');
+        // Jika Belum Login (Guest): Sembunyikan tombol edit/hapus via CSS
+        document.body.classList.add('role-viewer');
+        console.log("Mode: Viewer Only");
     }
 }
 
