@@ -258,7 +258,7 @@ body.role-viewer .aksi-kolom {
         async function updateField(id, kolom, nilaiBaru) {
     const nilaiClean = nilaiBaru.trim().toUpperCase(); // Biar rapi otomatis huruf besar
     
-    const { error } = await supabaseClient // Harus pakai supabaseClient sesuai baris 208
+    const { error } = await supabaseClient(SUPABASE_URL, SUPABASE_KEY); // Harus pakai supabaseClient sesuai baris 208
     .from('inventaris')
     .update({ [kolom]: nilaiClean })
     .eq('id_aset', id);
