@@ -268,19 +268,7 @@ body.role-viewer .aksi-kolom {
         .eq('id_aset', idAset) // Pastikan kolom di Supabase namanya 'id_aset'
         .select();
 
-    if (error) {
-        console.error("Error Supabase:", error);
-        alert("Gagal simpan: " + error.message);
-    } else if (data && data.length > 0) {
-        console.log("Berhasil! Data di database sudah berubah.");
-        // Ambil data terbaru agar tampilan stats & tabel sinkron
-        fetchData(); 
-    } else {
-        // Jika muncul ini, berarti ID 'P1.INV.KOM.0001' tidak ditemukan di kolom 'id_aset'
-        alert("Gagal: ID Aset [" + idAset + "] tidak ditemukan. Pastikan nama kolom di Supabase adalah 'id_aset' (huruf kecil semua).");
-        fetchData(); // Reset tampilan ke data asli
-    }
-    {
+           if (error) {
     console.error("Gagal update:", error);
     // Jika ditolak oleh RLS, biasanya muncul error 403 atau message policy
     if (error.code === '42501') { 
@@ -293,7 +281,19 @@ body.role-viewer .aksi-kolom {
     console.log("Data berhasil diupdate oleh Super Admin!");
     // fetchData(); // Aktifkan ini kalau mau refresh otomatis
 }
-           
+
+    if (error) {
+        console.error("Error Supabase:", error);
+        alert("Gagal simpan: " + error.message);
+    } else if (data && data.length > 0) {
+        console.log("Berhasil! Data di database sudah berubah.");
+        // Ambil data terbaru agar tampilan stats & tabel sinkron
+        fetchData(); 
+    } else {
+        // Jika muncul ini, berarti ID 'P1.INV.KOM.0001' tidak ditemukan di kolom 'id_aset'
+        alert("Gagal: ID Aset [" + idAset + "] tidak ditemukan. Pastikan nama kolom di Supabase adalah 'id_aset' (huruf kecil semua).");
+        fetchData(); // Reset tampilan ke data asli
+    }        
 }
         function updateStats(data) {
     if (!data) return;
