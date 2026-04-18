@@ -279,6 +279,7 @@ body.role-viewer .aksi-kolom {
             fetchData(); // Refresh tampilan biar teks balik ke semula
     }else if (data && data.length > 0) {
         console.log("Berhasil! Data di database sudah berubah.");
+        alert("Mantap Admin! Perubahan berhasil disimpan.");
         // Ambil data terbaru agar tampilan stats & tabel sinkron
         fetchData(); 
     } else {
