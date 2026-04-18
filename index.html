@@ -388,29 +388,34 @@ async function handleLogin() {
 
 // 3. Fungsi untuk tombol Logout
 async function handleLogout() {
+    // 1. Perintahkan Supabase untuk mengakhiri sesi secara global
     const { error } = await supabaseClient.auth.signOut();
     
     if (error) {
         console.error('Error logging out:', error.message);
+        alert("Gagal logout: " + error.message);
     } else {
-        // Hapus status login di browser
+        // 2. BERSIHKAN TOTAL penyimpanan browser
+        // Ini kunci utamanya biar pas refresh nggak login otomatis
         localStorage.clear();
-        
-        // JANGAN pakai reload, tapi paksa balik ke tampilan login
-        const loginSec = document.getElementById('loginSection');
-        const mainContent = document.querySelector('.main-content');
-        
-        if (loginSec && mainContent) {
-            loginSec.classList.remove('hidden'); // Munculkan kotak login
-            mainContent.classList.add('hidden'); // Sembunyikan dashboard
+        sessionStorage.clear();
+
+        // 3. Hapus semua cookie Supabase (opsional tapi bagus buat jaga-jaga)
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i];
+            const eqPos = cookie.indexOf("=");
+            const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+            document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
         }
-        
-        alert("Berhasil keluar, bro!");
+
+        alert("Berhasil keluar! Sesi telah dibersihkan.");
+
+        // 4. Paksa reload ke halaman awal (bukan dashboard)
+        // Gunakan replace agar user tidak bisa tekan tombol "Back" untuk masuk lagi
+        window.location.replace(window.location.pathname);
     }
 }
-
-// JALANKAN INI SEBAGAI PERINTAH UTAMA
-checkUser();
 
     </script>
 </body>
