@@ -258,19 +258,20 @@ body.role-viewer .aksi-kolom {
         async function updateField(id, kolom, nilaiBaru) {
     const nilaiClean = nilaiBaru.trim().toUpperCase(); // Biar rapi otomatis huruf besar
     
-    const { error } = await supabase
-        .from('inventaris') // Pastikan nama tabel di Supabase kamu 'inventaris'
-        .update({ [kolom]: nilaiClean })
-        .eq('id', id);
+    const { error } = await supabaseClient // Harus pakai supabaseClient sesuai baris 208
+    .from('inventaris')
+    .update({ [kolom]: nilaiClean })
+    .eq('id_aset', id);
 
     if (error) {
         console.error("Gagal update:", error);
-        alert("Gagal simpan perubahan bro!");
-    } else {
-        console.log("Data berhasil diupdate!");
-        // Optional: panggil updateStats() kalau yang diedit mempengaruhi jumlah laptop/pc
+        alert("Gagal simpan perubahan bro!")
+   } else {
+    console.log("Data berhasil diupdate!");
+    fetchData(); // Ini penting biar dashboard langsung nampilin data terbaru dari database
     }
-}
+
+  }
 
         function updateStats(data) {
     if (!data) return;
