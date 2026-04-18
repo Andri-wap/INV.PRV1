@@ -243,8 +243,8 @@ body.role-viewer .aksi-kolom {
                     <td class="p-2 bg-white">
                         <svg class="barcode mx-auto" jsbarcode-value="${item.id_aset}" jsbarcode-format="code128" jsbarcode-width="1" jsbarcode-height="30" jsbarcode-fontSize="13"></svg>
                     </td>
-                    <td class="editable uppercase font-bold" contenteditable="true" onblur="updateField('${item.user}', 'user', this.innerText.trim())">${item.user || '-'}</td>
-                    <td class="editable uppercase font-semibold" contenteditable="true" onblur="updateField('${item.dept}', 'dept', this.innerText.trim())">${item.dept || '-'}</td>
+                    <td class="editable uppercase font-bold" contenteditable="true" onblur="updateField('${item.id_aset}', 'user', this.innerText.trim())">${item.user || '-'}</td>
+                    <td class="editable uppercase font-semibold" contenteditable="true" onblur="updateField('${item.id_aset}', 'dept', this.innerText.trim())">${item.dept || '-'}</td>
                     <td>${item.device || '-'}</td>
                     <td><div class="badge ${getStatusClass(item.status)} border-none text-white font-bold">${item.status || '-'}</div></td>
                     <td class="no-print aksi-kolom flex gap-1 justify-center">
@@ -255,28 +255,27 @@ body.role-viewer .aksi-kolom {
             `).join('');
             JsBarcode(".barcode").init();
         }
-       async function updateField(idRaw, kolom, nilaiBaru) {
-    const idClean = idRaw.trim(); // Membersihkan ID Aset dari spasi tersembunyi
+       async function updateField(idAset, kolom, nilaiBaru) {
     const nilaiClean = nilaiBaru.trim().toUpperCase();
+    const idClean = idAset.trim();
     
-    console.log(`Mencoba update ${kolom} untuk ID: "${idClean}"`);
-
+    // Pakai supabaseClient sesuai baris 208 di kodinganmu
     const { data, error } = await supabaseClient
         .from('inventaris')
         .update({ [kolom]: nilaiClean })
-        .eq('id_aset', idClean) // Mencari berdasarkan ID yang sudah bersih
+        .eq('id_aset', idClean) // Mencari berdasarkan kolom id_aset
         .select();
 
     if (error) {
-        console.error("Gagal update:", error);
-        alert("Gagal simpan perubahan bro: " + error.message);
+        console.error("Gagal Update:", error);
+        alert("Gagal simpan: " + error.message);
     } else if (data && data.length > 0) {
-        console.log("Mantap! Data di database sudah berubah:", data);
-        await fetchData(); // Refresh tabel biar sinkron
+        console.log("Mantap! Data berhasil diubah di database.");
+        // Opsional: panggil fetchData() kalau mau layar langsung refresh total
+        // await fetchData(); 
     } else {
-        // Ini yang muncul di foto kamu tadi
-        alert("Gagal: ID Aset [" + idClean + "] tidak ditemukan di database! Periksa nama kolom di Supabase.");
-        await fetchData(); 
+        // Ini kalau ID-nya beneran gak ketemu
+        alert("Gagal: ID Aset [" + idClean + "] tidak ada di database. Cek penulisan kolom id_aset.");
     }
 }
         function updateStats(data) {
