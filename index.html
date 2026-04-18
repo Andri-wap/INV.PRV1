@@ -255,24 +255,24 @@ body.role-viewer .aksi-kolom {
             `).join('');
             JsBarcode(".barcode").init();
         }
-        async function updateField(id, kolom, nilaiBaru) {
-    const nilaiClean = nilaiBaru.trim().toUpperCase(); // Biar rapi otomatis huruf besar
+       async function updateField(id, kolom, nilaiBaru) {
+    const nilaiClean = nilaiBaru.trim().toUpperCase();
     
-    const { error } = await supabaseClient // Harus pakai supabaseClient sesuai baris 208
-    .from('inventaris')
-    .update({ [kolom]: nilaiClean })
-    .eq('id_aset', id);
+    const { data, error, count } = await supabaseClient
+        .from('inventaris')
+        .update({ [kolom]: nilaiClean })
+        .eq('id_aset', id)
+        .select(); // Tambahkan .select() biar kita dapet balikan datanya
 
     if (error) {
-        console.error("Gagal update:", error);
-        alert("Gagal simpan perubahan bro!")
-   } else {
-    console.log("Data berhasil diupdate!");
-    fetchData(); // Ini penting biar dashboard langsung nampilin data terbaru dari database
+        alert("Gagal update: " + error.message);
+    } else if (data.length === 0) {
+        alert("Gagal: ID Aset " + id + " tidak ditemukan di database!");
+    } else {
+        console.log("Mantap! Data berhasil diubah.");
+        fetchData(); // Refresh tampilan dashboard
     }
-
-  }
-
+}
         function updateStats(data) {
     if (!data) return;
 
