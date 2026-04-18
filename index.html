@@ -389,11 +389,24 @@ async function handleLogin() {
 // 3. Fungsi untuk tombol Logout
 async function handleLogout() {
     const { error } = await supabaseClient.auth.signOut();
+    
     if (error) {
         console.error('Error logging out:', error.message);
+    } else {
+        // Hapus status login di browser
+        localStorage.clear();
+        
+        // JANGAN pakai reload, tapi paksa balik ke tampilan login
+        const loginSec = document.getElementById('loginSection');
+        const mainContent = document.querySelector('.main-content');
+        
+        if (loginSec && mainContent) {
+            loginSec.classList.remove('hidden'); // Munculkan kotak login
+            mainContent.classList.add('hidden'); // Sembunyikan dashboard
+        }
+        
+        alert("Berhasil keluar, bro!");
     }
-    // Paksa refresh halaman balik ke form login
-    window.location.reload(); 
 }
 
 // JALANKAN INI SEBAGAI PERINTAH UTAMA
