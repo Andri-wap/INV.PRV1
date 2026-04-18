@@ -446,7 +446,7 @@ async function handleLogout() {
 
         // 4. Paksa reload ke halaman awal (bukan dashboard)
         // Gunakan replace agar user tidak bisa tekan tombol "Back" untuk masuk lagi
-        window.location.replace(window.location.pathname);
+        window.location.reload(window.location.pathname);
     }
 }
 
