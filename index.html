@@ -243,7 +243,6 @@ body.role-viewer .aksi-kolom {
                     <td class="p-2 bg-white">
                         <svg class="barcode mx-auto" jsbarcode-value="${item.id_aset}" jsbarcode-format="code128" jsbarcode-width="1" jsbarcode-height="30" jsbarcode-fontSize="13"></svg>
                     </td>
-                    // Pastikan pakai item.id_aset dan tambahkan .trim()
                     <td class="editable uppercase font-bold" contenteditable="true" onblur="updateField('${item.id_aset}', 'user', this.innerText.trim())">${item.user || '-'}</td>
                     <td class="editable uppercase font-semibold" contenteditable="true" onblur="updateField('${item.id_aset}', 'dept', this.innerText.trim())">${item.dept || '-'}</td>
                     <td>${item.device || '-'}</td>
