@@ -232,7 +232,7 @@ body.role-viewer .aksi-kolom {
                         <svg class="barcode mx-auto" jsbarcode-value="${item.id_aset}" jsbarcode-format="code128" jsbarcode-width="1" jsbarcode-height="30" jsbarcode-fontSize="13"></svg>
                     </td>
                     <td class="editable uppercase font-bold" contenteditable="true" onblur="updateField('${item.id}', 'user', this.innerText)">${item.user || '-'}</td>
-                    <td class="editable font-semibold text-primary uppercase" contenteditable="true" onblur="updateField('${item.id}', 'dept', this.innerText)">${item.dept || '-'}</td>
+                    <td class="editable uppercase font-semibold text-primary" contenteditable="true" onblur="updateField('${item.id}', 'dept', this.innerText)">${item.dept || '-'}</td>
                     <td>${item.device || '-'}</td>
                     <td><div class="badge ${getStatusClass(item.status)} border-none text-white font-bold">${item.status || '-'}</div></td>
                     <td class="no-print aksi-kolom flex gap-1 justify-center">
