@@ -341,28 +341,28 @@ body.role-viewer .aksi-kolom {
 
         // 1. Fungsi untuk cek status login setiap kali web dibuka
 async function checkUser() {
+    // 1. Ambil data user yang sedang aktif
     const { data: { user } } = await supabaseClient.auth.getUser();
     const loginSec = document.getElementById('loginSection');
     const mainContent = document.querySelector('.main-content');
-    
-    // 1. Selalu tampilkan dashboard agar "tamu" bisa lihat data
-    loginSec.classList.add('hidden');
-    mainContent.classList.remove('hidden');
-    fetchData();
 
-    // 2. Cek status Admin
-    const btnAksi = document.querySelectorAll('.btn-hapus, .btn-tambah, .btn-import, .no-print button:last-child');
-    const loginButton = document.querySelector('#loginSection button'); // Tombol Login di kotak awal
+    // 2. Mode Default: Selalu buka dashboard agar tamu bisa lihat data
+    if (loginSec) loginSec.classList.add('hidden');
+    if (mainContent) mainContent.classList.remove('hidden');
 
-    if (user) {
-        // Jika Login (Admin): Munculkan semua tombol sakti
+    // 3. Logika Hak Akses Super Admin (Hanya untuk Email Andri)
+    if (user && user.email === 'andri@panrama.com') {
+        // JIKA ADMIN: Hapus pembatas, semua tombol muncul
         document.body.classList.remove('role-viewer');
-        console.log("Welcome Admin:", user.email);
+        console.log("Welcome Super Admin:", user.email);
     } else {
-        // Jika Belum Login (Guest): Sembunyikan tombol edit/hapus via CSS
+        // JIKA TAMU atau USER BIASA: Pasang pembatas, tombol disembunyikan
         document.body.classList.add('role-viewer');
-        console.log("Mode: Viewer Only");
+        console.log("Status: Viewer Mode (Read-Only)");
     }
+
+    // 4. Jalankan ambil data dari Supabase
+    fetchData();
 }
 
 // 2. Fungsi untuk menangani tombol "Masuk Sistem"
