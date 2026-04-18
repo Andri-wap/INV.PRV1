@@ -405,6 +405,7 @@ async function handleLogin() {
         btn.innerText = "Masuk Sistem";
     } else {
         checkUser(); // Login sukses, cek ulang status user
+        checkSession();
     }
 }
 
