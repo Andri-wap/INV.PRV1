@@ -205,6 +205,13 @@ thead th {
     <div id="totalIT" class="stat-value text-primary text-xl">0</div>
   </div>
 </div>   
+                
+    <div class="stats shadow stat-dept">
+  <div class="stat p-3">
+    <div class="stat-title text-xs text-info">IT.INV</div>
+    <div id="totalIT.INV" class="stat-value text-primary text-xl">0</div>
+  </div>
+</div>   
 </div>
 
     
@@ -431,10 +438,17 @@ thead th {
 
     // 11. Hitung Dept IT
     const jmlIT = data.filter(i => {
-        const teksDept = (i.dept || i.dep || "").toString().toUpperCase();
-        return teksDept.includes("IT") || teksDept.includes("IT");
+        const d = (i.dept || i.dep || "").toString().toUpperCase();
+        return d === "IT" || d === "OFFICE/IT";
     }).length;
     document.getElementById('totalIT').innerText = jmlIT;
+
+    // 12. Hitung Dept IT INV
+const jmlITInv = data.filter(i => {
+    const d = (i.dept || i.dep || "").toString().toUpperCase().trim();
+    return d === "IT.INV" || d === "OFFICE/IT.INV";
+}).length;
+document.getElementById('totalITInv').innerText = jmlITInv;
 }    
         
 
