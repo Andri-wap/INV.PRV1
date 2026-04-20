@@ -209,7 +209,7 @@ thead th {
     <div class="stats shadow stat-dept">
   <div class="stat p-3">
     <div class="stat-title text-xs text-info">IT.INV</div>
-    <div id="totalITINV" class="stat-value text-primary text-xl">0</div>
+    <div id="totalINV" class="stat-value text-primary text-xl">0</div>
   </div>
 </div>   
 </div>
@@ -438,7 +438,9 @@ thead th {
 
   // 11. Hitung Dept IT
     const jmlIT = data.filter(i => {
-        const teksDept = (i.dept || i.dep || "").toString().toUpperCase();
+        const d = (i.dept || i.dep || "").toString().toUpperCase().trim();
+    // Dia cuma bakal hitung kalau tulisannya "IT.INV" atau "OFFICE/IT.INV"
+    return d.includes("IT"); 
         return teksDept.includes("IT") || teksDept.includes("IT");
     }).length;
     document.getElementById('totalIT').innerText = jmlIT;
