@@ -438,11 +438,9 @@ thead th {
 
   // 11. Hitung Dept IT
     const jmlIT = data.filter(i => {
-        const d = (i.dept || i.dep || "").toString().toUpperCase().trim();
-    // Dia cuma bakal hitung kalau tulisannya "IT.INV" atau "OFFICE/IT.INV"
-    return d.includes("IT"); 
-        return teksDept.includes("IT") || teksDept.includes("IT");
-    }).length;
+    const d = (i.dept || i.dep || "").toString().toUpperCase().trim();
+    return d === "IT" || d === "OFFICE/IT"; 
+}).length;
     document.getElementById('totalIT').innerText = jmlIT;
 
 
