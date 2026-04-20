@@ -440,7 +440,7 @@ thead th {
 const jmlIT = data.filter(i => {
     const d = (i.dept || i.dep || "").toString().toUpperCase().trim();
     // Syarat: Harus ada kata IT, tapi GAK BOLEH ada kata INV
-    return d.includes("IT") && !d.includes("INV");
+    return d.includes("IT") && !d.includes("ITINV");
 }).length;
 document.getElementById('totalIT').innerText = jmlIT;
 
