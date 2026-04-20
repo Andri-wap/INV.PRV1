@@ -445,12 +445,12 @@ const jmlIT = data.filter(i => {
 document.getElementById('totalIT').innerText = jmlIT;
 
     // 12. Hitung Dept IT.INV (Beneran pakai titik bro)
-const jmlITInv = data.filter(i => {
+const jmlITINV = data.filter(i => {
     const d = (i.dept || i.dep || "").toString().toUpperCase().trim();
     // Dia cuma bakal hitung kalau tulisannya "IT.INV" atau "OFFICE/IT.INV"
     return d.includes("IT.INV"); 
 }).length;
-document.getElementById('totalITInv').innerText = jmlITInv;
+document.getElementById('totalITINV').innerText = jmlITINV;
             
 }    
         
