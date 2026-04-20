@@ -347,13 +347,13 @@ thead th {
 }
     // 6. Hitung Dept HRD
     const jmlHRD = data.filter(i => 
-        i.dep && i.dep.toLowerCase().includes('hrd')
+        i.dept && i.dept.toLowerCase().includes('hrd')
     ).length;
     document.getElementById('totalHRD').innerText = jmlHRD;
 
     // 7. Hitung Dept PAJAK
     const jmlPajak = data.filter(i => 
-        i.dep && i.dep.toLowerCase().includes('pajak')
+        i.dept && i.dept.toLowerCase().includes('pajak')
     ).length;
     document.getElementById('totalPajak').innerText = jmlPajak;
 
