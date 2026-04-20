@@ -436,13 +436,13 @@ thead th {
     }).length;
     document.getElementById('totalFINANCE').innerText = jmlFINANCE;
 
-  // 11. Hitung Dept IT (Murni)
-const jmlIT = data.filter(i => {
-    const d = (i.dept || i.dep || "").toString().toUpperCase().trim();
-    // Syarat: Harus ada kata IT, tapi GAK BOLEH ada kata INV
-    return d.includes("IT") && !d.includes("ITINV");
-}).length;
-document.getElementById('totalIT').innerText = jmlIT;
+  // 11. Hitung Dept IT
+    const jmlIT = data.filter(i => {
+        const teksDept = (i.dept || i.dep || "").toString().toUpperCase();
+        return teksDept.includes("IT") || teksDept.includes("IT");
+    }).length;
+    document.getElementById('totalIT').innerText = jmlIT;
+
 
     // 12. Hitung Dept IT.INV (Beneran pakai titik bro)
 const jmlITINV = data.filter(i => {
