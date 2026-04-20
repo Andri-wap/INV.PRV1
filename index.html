@@ -365,6 +365,13 @@ thead th {
         return teksDept.includes("PAJAK") || teksDept.includes("TAX");
     }).length;
     document.getElementById('totalPajak').innerText = jmlPajak; 
+
+     // 8. Hitung Dept PPIC
+    const jmlPPIC = data.filter(i => {
+        const teksDept = (i.PPIC || i.PIC || "").toString().toUpperCase();
+        return teksDept.includes("PPIC") || teksDept.includes("PIC");
+    }).length;
+    document.getElementById('totalPPIC').innerText = jmlPPIC;        
 }    
         
 
