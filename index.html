@@ -198,6 +198,13 @@ thead th {
     <div id="totalFINANCE" class="stat-value text-primary text-xl">0</div>
   </div>
 </div>   
+
+    <div class="stats shadow stat-dept">
+  <div class="stat p-3">
+    <div class="stat-title text-xs text-info">IT</div>
+    <div id="totalIT" class="stat-value text-primary text-xl">0</div>
+  </div>
+</div>   
 </div>
 
     
@@ -421,6 +428,13 @@ thead th {
         return teksDept.includes("FINANCE") || teksDept.includes("FINAN");
     }).length;
     document.getElementById('totalFINANCE').innerText = jmlFINANCE;
+
+    // 11. Hitung Dept IT
+    const jmlIT = data.filter(i => {
+        const teksDept = (i.dept || i.dep || "").toString().toUpperCase();
+        return teksDept.includes("IT") || teksDept.includes("IT");
+    }).length;
+    document.getElementById('totalIT').innerText = jmlIT;
 }    
         
 
