@@ -444,13 +444,12 @@ thead th {
     document.getElementById('totalIT').innerText = jmlIT;
 
 
-    // 12. Hitung Dept IT.INV (Beneran pakai titik bro)
-const jmlITINV = data.filter(i => {
+    // 12. Hitung Dept INV
+    const jmlINV = data.filter(i => {
     const d = (i.dept || i.dep || "").toString().toUpperCase().trim();
-    // Dia cuma bakal hitung kalau tulisannya "IT.INV" atau "OFFICE/IT.INV"
-    return d.includes("ITINV"); 
+    return d === "INV" || d === "OFFICE/INV"; 
 }).length;
-document.getElementById('totalITINV').innerText = jmlITINV;
+    document.getElementById('totalINV').innerText = jmlINV;
             
 }    
         
