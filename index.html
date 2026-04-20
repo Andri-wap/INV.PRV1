@@ -162,14 +162,14 @@ thead th {
 
          <div class="stats shadow">
   <div class="stat p-3">
-    <div class="stat-title text-xs text-info">Dept: PPIC</div>
+    <div class="stat-title text-xs text-info">PPIC</div>
     <div id="totalPPIC" class="stat-value text-primary text-xl">0</div>
   </div>
 </div>
 
 <div class="stats shadow">
   <div class="stat p-3">
-    <div class="stat-title text-xs text-info">Dept: MD</div>
+    <div class="stat-title text-xs text-info">MD</div>
     <div id="totalMD" class="stat-value text-primary text-xl">0</div>
   </div>
 </div>
@@ -376,14 +376,14 @@ thead th {
 
      // 6. Hitung Dept PPIC (Cari kata PPIC di dalam teks)
     const jmlHRD = data.filter(i => {
-        const teksDept = (i.dept || i.dep || "").toString().toUpperCase();
+        const teksDept = (i.PPIC || i.PIC || "").toString().toUpperCase();
         return teksDept.includes("PPIC");
     }).length;
     document.getElementById('totalPPIC').innerText = jmlPPIC;
 
     // 7. Hitung Dept MD
     const jmlPajak = data.filter(i => {
-        const teksDept = (i.dept || i.dep || "").toString().toUpperCase();
+        const teksDept = (i.MD || i.MD ROOM || "").toString().toUpperCase();
         return teksDept.includes("MD") || teksDept.includes("MD ROOM");
     }).length;
     document.getElementById('totalMD').innerText = jmlMD;
