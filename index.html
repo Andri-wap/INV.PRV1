@@ -445,7 +445,7 @@ thead th {
 
     // 12. Hitung Dept IT INV
 const jmlIT.INV = data.filter(i => {
-    const d = (i.dept || i.dep || "").toString().toUpperCase():
+    const d = (i.dept || i.dep || "").toString().toUpperCase();
     return d === "IT.INV" || d === "OFFICE/IT.INV";
 }).length;
 document.getElementById('totalIT.INV').innerText = jmlIT.INV;
