@@ -444,11 +444,11 @@ thead th {
     document.getElementById('totalIT').innerText = jmlIT;
 
     // 12. Hitung Dept IT INV
-const jmlITInv = data.filter(i => {
+const jmlIT.INV = data.filter(i => {
     const d = (i.dept || i.dep || "").toString().toUpperCase().trim();
     return d === "IT.INV" || d === "OFFICE/IT.INV";
 }).length;
-document.getElementById('totalITInv').innerText = jmlITInv;
+document.getElementById('totalIT.INV').innerText = jmlIT.INV;
 }    
         
 
