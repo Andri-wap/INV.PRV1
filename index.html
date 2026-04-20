@@ -345,16 +345,15 @@ thead th {
     }).length;
     document.getElementById('unitRusak').innerText = rusak;
 }
-
-            // 6. Hitung Dept HRD
+    // 6. Hitung Dept HRD
     const jmlHRD = data.filter(i => 
-        i.dept && i.dept.toLowerCase().includes('hrd')
+        i.dep && i.dep.toLowerCase().includes('hrd')
     ).length;
     document.getElementById('totalHRD').innerText = jmlHRD;
 
     // 7. Hitung Dept PAJAK
     const jmlPajak = data.filter(i => 
-        i.dept && i.dept.toLowerCase().includes('pajak')
+        i.dep && i.dep.toLowerCase().includes('pajak')
     ).length;
     document.getElementById('totalPajak').innerText = jmlPajak;
 
