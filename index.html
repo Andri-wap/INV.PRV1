@@ -474,7 +474,7 @@ thead th {
     document.getElementById('totalCAD').innerText = jmlCAD;
 
     // 14. Hitung Dept CAD
-    const jmlGUDANG ACCESSORIES = data.filter(i => {
+    const jmlGUDANGACCESSORIES = data.filter(i => {
         const teksDept = (i.dept || i.dep || "").toString().toUpperCase();
         return teksDept.includes("GUDANG ACCESSORIES") || teksDept.includes("GUDANG ACCESSORIES");
     }).length;
