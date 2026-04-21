@@ -476,9 +476,9 @@ thead th {
     // 14. Hitung Dept GD.ACC
     const jmlGUDANGACCESSORIES = data.filter(i => {
         const teksDept = (i.dept || i.dep || "").toString().toUpperCase();
-         return d.includes("GUDANG ACCESSORIES") || d.includes("GUDANG ACCESSORIES"); 
+          return d === "GUDANG ACCESSORIES" || d === "GUDANG ACCESSORIES";
     }).length;
-    document.getElementById('totalGUDANG ACCESSORIES').innerText = jmlCAD;
+    document.getElementById('totalGUDANG ACCESSORIES').innerText = jmlGUDANGACCESSORIES;
             
             
 }    
