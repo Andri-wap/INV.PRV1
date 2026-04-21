@@ -473,10 +473,10 @@ thead th {
     }).length;
     document.getElementById('totalCAD').innerText = jmlCAD;
 
-    // 14. Hitung Dept CAD
+    // 14. Hitung Dept GD.ACC
     const jmlGUDANGACCESSORIES = data.filter(i => {
         const teksDept = (i.dept || i.dep || "").toString().toUpperCase();
-         return d === "GUDANG ACCESSORIES" || d === "GUDANG ACCESSORIES"; 
+         return d === "GUDANG ACCESSORIES" || d === "GUDANG"; 
     }).length;
     document.getElementById('totalGUDANG ACCESSORIES').innerText = jmlCAD;
             
