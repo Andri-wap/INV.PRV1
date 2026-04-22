@@ -261,6 +261,13 @@ thead th {
     <div id="totalMD" class="stat-value text-primary text-xl">0</div>
   </div>
 </div> 
+
+    <div class="stats shadow stat-dept">
+  <div class="stat p-3">
+    <div class="stat-title text-xs text-info">BC</div>
+    <div id="totalBC" class="stat-value text-primary text-xl">0</div>
+  </div>
+</div> 
     
 </div>
 
@@ -549,6 +556,13 @@ thead th {
           return teksDept.includes("MD") || teksDept.includes("MD");
     }).length;
     document.getElementById('totalMD').innerText = jmlMD;
+
+         // 19. Hitung Dept BC
+    const jmlBC = data.filter(i => {
+        const teksDept = (i.dept || i.dep || "").toString().toUpperCase();
+          return teksDept.includes("BC") || teksDept.includes("BC");
+    }).length;
+    document.getElementById('totalBC').innerText = jmlBC;
 
 
             
