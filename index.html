@@ -289,6 +289,13 @@ thead th {
     <div id="totalGENARAL MANAGER" class="stat-value text-primary text-xl">0</div>
   </div>
 </div> 
+
+     <div class="stats shadow stat-dept">
+  <div class="stat p-3">
+    <div class="stat-title text-xs text-info">IE</div>
+    <div id="totalIE" class="stat-value text-primary text-xl">0</div>
+  </div>
+</div> 
     
 </div>
 
@@ -605,6 +612,13 @@ thead th {
           return teksDept.includes("GENARAL MANAGER") || teksDept.includes("GENARAL MANAGER");
     }).length;
     document.getElementById('totalGENARAL MANAGER').innerText = jmlGENARALMANAGER;
+
+    // 23. Hitung Dept IE
+    const jmlIE = data.filter(i => {
+        const teksDept = (i.dept || i.dep || "").toString().toUpperCase();
+          return teksDept.includes("IE/PRODUKSI") || teksDept.includes("IE/PRODUKSI");
+    }).length;
+    document.getElementById('totalIE').innerText = jmlIE;
 
 
 
