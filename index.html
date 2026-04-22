@@ -248,10 +248,17 @@ thead th {
   </div>
 </div> 
 
-        <div class="stats shadow stat-dept">
+    <div class="stats shadow stat-dept">
   <div class="stat p-3">
     <div class="stat-title text-xs text-info">SAMPLE ROOM</div>
     <div id="totalSAMPLE ROOM" class="stat-value text-primary text-xl">0</div>
+  </div>
+</div> 
+
+     <div class="stats shadow stat-dept">
+  <div class="stat p-3">
+    <div class="stat-title text-xs text-info">MD</div>
+    <div id="totalMD" class="stat-value text-primary text-xl">0</div>
   </div>
 </div> 
     
@@ -535,6 +542,14 @@ thead th {
           return teksDept.includes("SAMPLE ROOM") || teksDept.includes("SAMPLE ROOM");
     }).length;
     document.getElementById('totalSAMPLE ROOM').innerText = jmlSAMPLEROOM;
+
+     // 17. Hitung Dept SAMPLE ROOM
+    const jmlMD = data.filter(i => {
+        const teksDept = (i.dept || i.dep || "").toString().toUpperCase();
+          return teksDept.includes("MD") || teksDept.includes("MD");
+    }).length;
+    document.getElementById('totalMD').innerText = jmlMD;
+
 
             
             
