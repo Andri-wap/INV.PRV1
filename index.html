@@ -515,6 +515,13 @@ thead th {
     }).length;
     document.getElementById('totalPACKING').innerText = jmlPACKING;
 
+        // 16. Hitung Dept SAMPLE PROD
+    const jmlSAMPLEPRODUKSI = data.filter(i => {
+        const teksDept = (i.dept || i.dep || "").toString().toUpperCase();
+          return teksDept.includes("SAMPLE PRODUKSI") || teksDept.includes("SAMPLE PRODUKSI");
+    }).length;
+    document.getElementById('totalGUDANG KAIN').innerText = jmlSAMPLEPRODUKSI;
+
             
             
 }    
