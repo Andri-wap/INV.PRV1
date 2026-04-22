@@ -467,11 +467,11 @@ thead th {
 
 
     // 12. Hitung Dept INV
-    const jmlINV = data.filter(i => {
+    const jmlINVENTORY = data.filter(i => {
     const d = (i.dept || i.dep || "").toString().toUpperCase().trim();
-    return d === "INV" || d === "OFFICE/INV"; 
+    return d === "INVENTORY" || d === "OFFICE/INVENTORY"; 
 }).length;
-    document.getElementById('totalINV').innerText = jmlINV;
+    document.getElementById('totalINVENTORY').innerText = jmlINVENTORY;
 
     // 13. Hitung Dept CAD
     const jmlCAD = data.filter(i => {
