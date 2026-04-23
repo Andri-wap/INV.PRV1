@@ -923,14 +923,15 @@ html5QrcodeScanner.render(onScanSuccess);
     }
 
     // Susun pesan untuk ditampilkan (atau bisa pakai Modal)
-    let pesan = 'RIWAYAT ASET: ${idAset}\n\n';
-    logs.forEach((log, index) => {
-        const tgl = new Date(log.tgl_perubahan).toLocaleString('id-ID');
-        pesan += '${index + 1}. [${tgl}]\n   Dari: ${log.user_lama} ➡️ Ke: ${log.user_baru}\n   Oleh: ${log.admin_eksekusi}\n\n';
-    });
+    let pesan = 📜 RIWAYAT ASET: ${idAset}\n\n;
 
-    alert(pesan);
-}
+logs.forEach((log, index) => {
+    const tgl = new Date(log.tgl_perubahan).toLocaleString('id-ID');
+    // Di sini juga harus pakai backtick ( ` )
+    pesan += ${index + 1}. [${tgl}]\n   Dari: ${log.user_lama} ➡️ Ke: ${log.user_baru}\n   Oleh: ${log.admin_eksekusi}\n\n;
+});
+
+alert(pesan);
 		
             // Mencegah Klik Kanan
 document.addEventListener('contextmenu', event => event.preventDefault());
