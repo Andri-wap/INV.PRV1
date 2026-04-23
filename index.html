@@ -904,6 +904,35 @@ html5QrcodeScanner.render(onScanSuccess);
     }
 }
 
+		async function lihatHistory(idAset) {
+    // 1. Ambil data dari tabel history_aset
+    const { data: logs, error } = await supabaseClient
+        .from('history_aset')
+        .select('*')
+        .eq('id_aset', idAset)
+        .order('tgl_perubahan', { ascending: false });
+
+    if (error) {
+        alert("Gagal ambil history: " + error.message);
+        return;
+    }
+
+    if (!logs || logs.length === 0) {
+        alert("Belum ada riwayat perubahan untuk aset: " + idAset);
+        return;
+    }
+
+    // 2. Susun tampilan history (Pakai alert dulu biar simple, atau modal kalau mau pro)
+    let daftarLog = `📜 RIWAYAT PERUBAHAN ASET: ${idAset}\n\n`;
+    
+    logs.forEach((log, index) => {
+        const tgl = new Date(log.tgl_perubahan).toLocaleString('id-ID');
+        daftarLog += `${index + 1}. [${tgl}]\n   User: ${log.user_lama} ➔ ${log.user_baru}\n   Admin: ${log.admin_eksekusi}\n\n`;
+    });
+
+    alert(daftarLog);
+}
+
 
 		
             // Mencegah Klik Kanan
