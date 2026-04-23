@@ -824,6 +824,9 @@ async function handleLogout() {
 function onScanSuccess(decodedText, decodedResult) {
     // decodedText adalah hasil isi barcodenya
     const code = decodedText.trim().toUpperCase();
+	if (typeof data === 'undefined' || !data) {console.error("data belum dimuat dari supabase bro");
+	 return;
+	}
     
     const ditemukan = data.find(item => 
       (item.id_aset || "").toString().toUpperCase() === code
@@ -851,6 +854,7 @@ function onScanSuccess(decodedText, decodedResult) {
 let html5QrcodeScanner = new Html5QrcodeScanner(
 	"reader", { fps: 20, qrbox: 300, aspectRatio: 1.0});
 html5QrcodeScanner.render(onScanSuccess);
+		
             // Mencegah Klik Kanan
 document.addEventListener('contextmenu', event => event.preventDefault());
 
