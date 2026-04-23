@@ -656,7 +656,7 @@ thead th {
 
      // 24. Hitung Dept PRODUKSI
     const jmlPRODUKSI = data.filter(i => {
-        const teksDept = (i.dept || i.dep || "").toString().toUpperCase();
+        const d = (i.dept || i.dep || "").toString().toUpperCase();
           return d.includes("PRODUKSI") && !d.includes("SAMPLE") && !d.includes("IE");
     }).length;
     document.getElementById('totalPRODUKSI').innerText = jmlPRODUKSI;
