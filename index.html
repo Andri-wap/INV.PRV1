@@ -8,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
@@ -306,7 +307,10 @@ thead th {
     
 </div>
 
-    
+            <div class="mb-6 no-print bg-base-200 p-4 rounded-xl shadow-inner">
+            <div id="reader" style="width: 100%;" class="overflow-hidden rounded-lg"></div>
+            <p class="text-center text-xs mt-2 italic text-gray-500">Arahkan kamera HP ke Barcode Aset</p>
+            </div>
 
             <div class="flex flex-wrap gap-2 mb-6 no-print">
                 <button onclick="toggleForm()" class="btn btn-primary text-white">+ Tambah Aset</button>
@@ -816,6 +820,37 @@ async function handleLogout() {
     }
 }
 
+       // Fungsi Scanner Kamera HP
+function onScanSuccess(decodedText, decodedResult) {
+    // decodedText adalah hasil isi barcodenya
+    const code = decodedText.trim().toUpperCase();
+    
+    const ditemukan = data.find(item => 
+      (item.id_aset || "").toString().toUpperCase() === code
+    );
+
+    if (ditemukan) {
+        // Berhenti scan sebentar biar gak bunyi terus
+        html5QrcodeScanner.clear();
+        
+        alert(
+          "✅ DATA DITEMUKAN!\n" +
+          "--------------------------\n" +
+          "ID Aset : " + ditemukan.id_aset + "\n" +
+          "User    : " + ditemukan.user + "\n" +
+          "Dept    : " + ditemukan.dept + "\n" +
+          "Device  : " + ditemukan.device
+        );
+        
+        // Mulai scan lagi setelah alert ditutup
+        location.reload(); 
+    }
+}
+
+// Jalankan Scanner
+let html5QrcodeScanner = new Html5QrcodeScanner(
+	"reader", { fps: 10, qrbox: 250 });
+html5QrcodeScanner.render(onScanSuccess);
             // Mencegah Klik Kanan
 document.addEventListener('contextmenu', event => event.preventDefault());
 
