@@ -458,7 +458,6 @@ thead th {
                     <td><div class="badge ${getStatusClass(item.status)} border-none text-white font-bold">${item.status || '-'}</div></td>
                     <td class="no-print aksi-kolom flex gap-1 justify-center">
                         <button onclick="printSingleLabel('${item.id_aset}', '${item.user}', '${item.device}')" class="btn btn-ghost btn-xs text-primary">Label</button>
-						// Tambahkan tombol ini di kolom aksi tabel kamu
                         <button onclick="lihatHistory('${item.id_aset}')" class="btn btn-xs btn-outline btn-info">
                          📜 History
                          </button>
