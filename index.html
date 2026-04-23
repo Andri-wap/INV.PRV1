@@ -307,10 +307,14 @@ thead th {
     
 </div>
 
-            <div class="mb-6 no-print bg-black p-2 rounded-xl shadow-2xl">
-            <div id="reader" style="width: 100%; min-height: 100px;" class="overflow-hidden rounded-lg"></div>
-            <p class="text-center text-white text-xs mt-2 font-bold animate-pulse">📷 ARAHKAN KAMERA KE BARCODE</p>
-            </div>
+            <div id="scannerSection" class="hidden no-print">
+    <div class="flex justify-center mb-4">
+        <div class="bg-black p-1 rounded-lg shadow-lg" style="width: 100%; max-width: 280px;"> 
+            <div id="reader" style="width: 100%; min-height: 150px;" class="overflow-hidden rounded-md"></div>
+            <p class="text-center text-white text-[8px] mt-1 opacity-70">📷 READY TO SCAN</p>
+        </div>
+    </div>
+</div>
 
             <div class="flex flex-wrap gap-2 mb-6 no-print">
                 <button onclick="toggleForm()" class="btn btn-primary text-white">+ Tambah Aset</button>
@@ -758,10 +762,20 @@ async function checkUser() {
     if (user && user.email === 'andri@panrama.com') {
         // JIKA ADMIN: Hapus pembatas, semua tombol muncul
         document.body.classList.remove('role-viewer');
+
+		//MUNCULKAN SCANNER
+		const scannerSection = document.getElementById('scannerSection');
+    if (scannerSection) scannerSection.classList.remove('hidden');
+		
         console.log("Welcome Super Admin:", user.email);
     } else {
         // JIKA TAMU atau USER BIASA: Pasang pembatas, tombol disembunyikan
         document.body.classList.add('role-viewer');
+
+		// SEMBUNYIKAN SCANNER
+    const scannerSection = document.getElementById('scannerSection');
+    if (scannerSection) scannerSection.classList.add('hidden');
+		
         console.log("Status: Viewer Mode (Read-Only)");
     }
 
