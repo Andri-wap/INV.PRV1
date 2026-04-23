@@ -923,10 +923,10 @@ html5QrcodeScanner.render(onScanSuccess);
     }
 
     // Susun pesan untuk ditampilkan (atau bisa pakai Modal)
-    let pesan = RIWAYAT ASET: ${idAset}\n\n;
+    let pesan = 'RIWAYAT ASET: ${idAset}\n\n';
     logs.forEach((log, index) => {
         const tgl = new Date(log.tgl_perubahan).toLocaleString('id-ID');
-        pesan += ${index + 1}. [${tgl}]\n   Dari: ${log.user_lama} ➡️ Ke: ${log.user_baru}\n   Oleh: ${log.admin_eksekusi}\n\n;
+        pesan += '${index + 1}. [${tgl}]\n   Dari: ${log.user_lama} ➡️ Ke: ${log.user_baru}\n   Oleh: ${log.admin_eksekusi}\n\n';
     });
 
     alert(pesan);
