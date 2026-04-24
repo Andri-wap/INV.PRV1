@@ -793,14 +793,14 @@ async function checkUser() {
         if (loginSec) loginSec.classList.add('hidden');
         if (pilihModal) pilihModal.classList.remove('hidden');
         if (mainContent) mainContent.classList.add('hidden');
+
+        updateAdminUI();
+
     } else {
         // Jika belum login: Munculkan Login, Sembunyikan yang lain
         if (loginSec) loginSec.classList.remove('hidden');
         if (pilihModal) pilihModal.classList.add('hidden');
         if (mainContent) mainContent.classList.add('hidden');
-        if (session) {
-        updateAdminUI(); // <--- TAMBAHKAN INI BIAR CEK ADMIN JALAN
-        }
     }
 }
 
