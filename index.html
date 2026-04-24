@@ -781,21 +781,20 @@ thead th {
 
         // 1. Fungsi untuk cek status login setiap kali web dibuka
 async function checkUser() {
-    // 1. Ambil data user aktif
     const { data: { user } } = await supabaseClient.auth.getUser();
     
+    // Ambil elemen-elemennya
     const loginSec = document.getElementById('loginSection');
-    const pilihModal = document.getElementById('pilihPTModal'); // Ambil modal pilih PT
+    const pilihModal = document.getElementById('pilihPTModal');
     const mainContent = document.querySelector('.main-content');
 
-    // 2. Logika Tampilan
     if (user) {
-        // Jika sudah login, sembunyikan login, munculkan PILIHAN PT
+        // Jika sudah login: Sembunyikan Login, Munculkan Pilihan PT
         if (loginSec) loginSec.classList.add('hidden');
-        if (pilihModal) pilihModal.classList.remove('hidden'); // <--- INI KUNCINYA
-        if (mainContent) mainContent.classList.add('hidden'); // Pastikan dashboard masih sembunyi
+        if (pilihModal) pilihModal.classList.remove('hidden');
+        if (mainContent) mainContent.classList.add('hidden');
     } else {
-        // Jika belum login, tampilkan login
+        // Jika belum login: Munculkan Login, Sembunyikan yang lain
         if (loginSec) loginSec.classList.remove('hidden');
         if (pilihModal) pilihModal.classList.add('hidden');
         if (mainContent) mainContent.classList.add('hidden');
@@ -844,12 +843,20 @@ async function handleLogin() {
         err.classList.remove('hidden');
         btn.innerText = "Masuk Sistem";
     } else {
+        // Ambil data user yang baru login
+        const { data: { user } } = await supabaseClient.auth.getUser();
+        
         // Sembunyikan form login
         document.getElementById('loginSection').classList.add('hidden');
-        // Munculkan modal pilih PT yang baru kita buat tadi
-        document.getElementById('pilihPTModal').classList.remove('hidden');
+        
+        // Munculkan modal pilih PT
+        const modal = document.getElementById('pilihPTModal');
+        if (modal) {
+            modal.classList.remove('hidden');
+        } else {
+            alert("Error: Modal pilih PT tidak ditemukan di HTML!");
+        }
     }
-}
 
 // 3. Fungsi untuk tombol Logout
 async function handleLogout() {
@@ -969,18 +976,24 @@ html5QrcodeScanner.render(onScanSuccess);
 }
 
 function setPT(tabel, history) {
-    // Set variabel global yang dipakai di fetchData, updateField, dll
+    // 1. Isi variabel global dengan pilihan kita
     currentTable = tabel;
     currentHistory = history;
 
-    // Sembunyikan modal pilih PT
+    // 2. Tutup modal pilihan
     document.getElementById('pilihPTModal').classList.add('hidden');
     
-    // Tampilkan dashboard utama (pastikan id-nya sesuai, di kodinganmu: main-content)
-    document.getElementById('main-content').classList.remove('hidden');
-    
-    // Sekarang baru ambil data dari tabel yang dipilih
+    // 3. Buka dashboard utama
+    // Pakai querySelector karena di kodinganmu pakai class 'main-content'
+    const main = document.querySelector('.main-content');
+    if (main) {
+        main.classList.remove('hidden');
+    }
+
+    // 4. Baru ambil datanya dari tabel yang dipilih
     fetchData();
+    
+    console.log("Sistem Berjalan di Tabel:", currentTable);
 }
 
 
