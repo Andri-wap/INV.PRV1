@@ -975,27 +975,31 @@ html5QrcodeScanner.render(onScanSuccess);
     alert(daftarLog);
 }
 
+// FUNGSI INI YANG MENJALANKAN TOMBOL PILIH PT
 function setPT(tabel, history) {
-    // 1. Isi variabel global dengan pilihan kita
+    // 1. Masukkan pilihan ke variabel global
     currentTable = tabel;
     currentHistory = history;
 
-    // 2. Tutup modal pilihan
-    document.getElementById('pilihPTModal').classList.add('hidden');
-    
-    // 3. Buka dashboard utama
-    // Pakai querySelector karena di kodinganmu pakai class 'main-content'
-    const main = document.querySelector('.main-content');
-    if (main) {
-        main.classList.remove('hidden');
+    console.log("Membuka Database:", currentTable);
+
+    // 2. Tutup kotak pilihan PT
+    const modal = document.getElementById('pilihPTModal');
+    if (modal) modal.classList.add('hidden');
+
+    // 3. Munculkan Dashboard (Cari elemen dengan class main-content)
+    const mainContent = document.querySelector('.main-content');
+    if (mainContent) {
+        mainContent.classList.remove('hidden');
+    } else {
+        // Jika pakai ID di HTML-nya, gunakan ini:
+        const mainID = document.getElementById('main-content');
+        if (mainID) mainID.classList.remove('hidden');
     }
 
-    // 4. Baru ambil datanya dari tabel yang dipilih
+    // 4. AMBIL DATA DARI SUPABASE
     fetchData();
-    
-    console.log("Sistem Berjalan di Tabel:", currentTable);
 }
-
 
 		
             // Mencegah Klik Kanan
