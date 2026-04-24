@@ -481,6 +481,9 @@ thead th {
                         <button onclick="lihatHistory('${item.id_aset}')" class="btn btn-xs btn-outline btn-info">
                          📜 History
                          </button>
+                         <button onclick="bukaModalTransfer('${item.id}', '${item.nama_aset}')" class="btn btn-warning btn-xs">
+                         <i class="fas fa-exchange-alt"></i> Transfer
+                         </button>
                         <button onclick="deleteAsset('${item.id_aset}')" class="btn btn-ghost btn-xs text-error btn-hapus">Hapus</button>
                     </td>
                 </tr>
@@ -1001,6 +1004,19 @@ document.onkeydown = function(e) {
     }
 };
     </script>
+
+    <div id="modalTransfer" class="hidden fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-[110] no-print">
+    <div class="bg-white p-8 rounded-xl shadow-2xl max-w-sm w-full text-center">
+        <h2 class="text-xl font-bold mb-4 text-gray-800">Transfer Aset</h2>
+        <p id="infoAset" class="mb-6 text-gray-600 italic"></p>
+        <div class="grid gap-4">
+            <p class="text-sm font-semibold text-gray-500">Pindahkan ke:</p>
+            <button id="btnKeP1" class="btn btn-primary w-full">PT PANRAMA (P1)</button>
+            <button id="btnKeP2" class="btn btn-secondary w-full">PT KEDUA (P2)</button>
+            <button onclick="tutupModalTransfer()" class="btn btn-ghost mt-2">Batal</button>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
