@@ -905,11 +905,8 @@ async function prosesMutasi(tabelTujuan) {
         const namaPTTujuan = tabelTujuan === 'inventaris_p1' ? 'PT PANRAMA' : 'PT KEDUA';
         const tabelHistoryTujuan = tabelTujuan === 'inventaris_p1' ? 'history_aset' : 'history_p2';
 
-        // 2. Bersihkan dulu di tabel tujuan (cegah error duplicate key)
-        await supabaseClient
-            .from(tabelTujuan)
-            .delete()
-            .eq('id_aset', aset.id_aset);
+        // 2. Hapus dulu di tabel TUJUAN untuk cegah duplicate key
+        await supabaseClient.from(tabelTujuan).delete().eq('id_aset', aset.id_aset);
 
         // 3. Masukkan ke tabel Inventaris Tujuan dengan status "Active"
         const { error: insErr } = await supabaseClient
@@ -920,31 +917,25 @@ async function prosesMutasi(tabelTujuan) {
                 dept: aset.dept,
                 device: aset.device,
                 specs: aset.specs,
-                status: 'Active', // Biar labelnya langsung Ijo
-                created_at: new Date().toISOString() // Format standar DB
+                status: 'Active', 
+                created_at: new Date().toISOString()
             }]);
 
         if (insErr) throw insErr;
 
-        // 4. Masukkan Log ke tabel History (Pakai format ISO biar gak error)
-        const { error: histErr } = await supabaseClient
+        // 4. Masukkan Log ke tabel History (Pakai ISO Format agar tidak null/error)
+        await supabaseClient
              .from(tabelHistoryTujuan)
              .insert([{
                 id_aset: aset.id_aset,
                 user: aset.user,
-                user_lama: aset.user,
-                user_baru: aset.user,
+                user_lama: aset.user, // Kolom wajib
+                user_baru: aset.user, // Kolom wajib
                 aksi: 'Mutasi', 
                 keterangan: `Pindahan dari ${namaPTAsal} ke ${namaPTTujuan}`,
-                tgl_perubahan: new Date().toISOString(), // WAJIB ISO FORMAT
+                tgl_perubahan: new Date().toISOString(), // Standard Supabase
                 admin_eksekusi: 'Super Admin'
             }]);
-
-        if (histErr) {
-             console.error("Gagal simpan history:", histErr.message);
-             // Tetap lanjut hapus atau stop? Saran saya tampilkan warning saja tapi lanjut hapus
-             console.warn("History gagal dicatat, tapi data tetap dipindahkan.");
-        }
 
         // 5. Hapus dari tabel asal
         const { error: delErr } = await supabaseClient
@@ -955,13 +946,25 @@ async function prosesMutasi(tabelTujuan) {
         if (delErr) throw delErr;
 
         alert("Mutasi Berhasil!");
-        tutupModalTransfer();
+        tutupModalTransfer(); // Memanggil fungsi di bawah
         fetchData(); 
 
     } catch (err) {
         console.error("Gagal Mutasi:", err.message);
         alert("Error: " + err.message);
     }
+}
+
+// TARUH FUNGSI INI DI LUAR (GLOBAL SCOPE)
+function tutupModalTransfer() {
+    console.log("Menutup modal...");
+    const modal = document.getElementById('modalTransfer');
+    if (modal) {
+        modal.classList.add('hidden');
+    } else {
+        console.error("Elemen modalTransfer tidak ditemukan!");
+    }
+    asetIdSedangDiproses = null; 
 }
        // Fungsi Scanner Kamera HP
 function onScanSuccess(decodedText, decodedResult) {
