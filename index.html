@@ -896,7 +896,7 @@ async function prosesMutasi(tabelTujuan) {
         const { data: aset, error: fetchErr } = await supabaseClient
             .from(currentTable)
             .select('*')
-            .eq('id_aset', asetIdSedangDiproses)
+            .eq('id_aset', asetIdSedangDiproses) // Pastikan id_aset (tanpa spasi)
             .single();
 
         if (fetchErr || !aset) throw new Error("Data aset tidak ditemukan!");
@@ -912,7 +912,7 @@ async function prosesMutasi(tabelTujuan) {
                 specs: aset.specs,
                 status: aset.status,
                 created_at: new Date()
-            }]);
+            }]); // <--- Pastikan kurung tutupnya rapi seperti ini
 
         if (insErr) throw insErr;
 
@@ -926,13 +926,12 @@ async function prosesMutasi(tabelTujuan) {
 
         alert("Mutasi Berhasil!");
         tutupModalTransfer();
-        fetchData(); // Refresh tabel
+        fetchData(); // Supaya data di tabel langsung hilang & pindah
 
     } catch (err) {
         console.error("Gagal Mutasi:", err.message);
         alert("Error: " + err.message);
     }
-}
 }
 
        // Fungsi Scanner Kamera HP
