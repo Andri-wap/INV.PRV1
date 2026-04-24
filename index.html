@@ -798,29 +798,37 @@ async function checkUser() {
         if (loginSec) loginSec.classList.remove('hidden');
         if (pilihModal) pilihModal.classList.add('hidden');
         if (mainContent) mainContent.classList.add('hidden');
+        if (session) {
+        updateAdminUI(); // <--- TAMBAHKAN INI BIAR CEK ADMIN JALAN
+        }
     }
 }
 
-    // 3. Logika Hak Akses Super Admin (Hanya untuk Email Andri)
-    if (user && user.email === 'andri@panrama.com') {
-        // JIKA ADMIN: Hapus pembatas, semua tombol muncul
-        document.body.classList.remove('role-viewer');
+    // 3. Logika Hak Akses Super Admin
+async function updateAdminUI() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    const user = session?.user; // Sekarang 'user' sudah didefinisikan aman
 
-		//MUNCULKAN SCANNER
-		const scannerSection = document.getElementById('scannerSection');
-    if (scannerSection) scannerSection.classList.remove('hidden');
-		
+    if (user && user.email === 'andri@panrama.com') {
+        // JIKA ADMIN: Hapus pembatas
+        document.body.classList.remove('role-viewer');
+        
+        // MUNCULKAN SCANNER
+        const scannerSection = document.getElementById('scannerSection');
+        if (scannerSection) scannerSection.classList.remove('hidden');
+        
         console.log("Welcome Super Admin:", user.email);
     } else {
-        // JIKA TAMU atau USER BIASA: Pasang pembatas, tombol disembunyikan
+        // JIKA TAMU: Pasang pembatas
         document.body.classList.add('role-viewer');
-
-		// SEMBUNYIKAN SCANNER
-    const scannerSection = document.getElementById('scannerSection');
-    if (scannerSection) scannerSection.classList.add('hidden');
-		
+        
+        // SEMBUNYIKAN SCANNER
+        const scannerSection = document.getElementById('scannerSection');
+        if (scannerSection) scannerSection.classList.add('hidden');
+        
         console.log("Status: Viewer Mode (Read-Only)");
     }
+}
 
     
 
