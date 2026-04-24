@@ -1024,6 +1024,31 @@ function setPT(tabel, history) {
     // Ambil data
     fetchData();
 } // <--- Tutup setPT
+
+function bukaModalTransfer(id, nama) {
+    console.log("Klik Transfer:", id);
+    asetIdSedangDiproses = id;
+    
+    const modal = document.getElementById('modalTransfer');
+    const info = document.getElementById('infoAset');
+    
+    if (modal) {
+        if (info) info.innerText = "Aset: " + nama;
+        modal.classList.remove('hidden');
+    }
+    
+    // Logika tombol PT tujuan
+    const btnP1 = document.getElementById('btnKeP1');
+    const btnP2 = document.getElementById('btnKeP2');
+    
+    if (currentTable === 'inventaris_p1') {
+        if(btnP1) btnP1.classList.add('hidden');
+        if(btnP2) btnP2.classList.remove('hidden');
+    } else {
+        if(btnP1) btnP1.classList.remove('hidden');
+        if(btnP2) btnP2.classList.add('hidden');
+    }
+}
 		
             // Mencegah Klik Kanan
 document.addEventListener('contextmenu', event => event.preventDefault());
