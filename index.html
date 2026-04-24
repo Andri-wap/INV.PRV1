@@ -114,6 +114,20 @@ thead th {
     </div>
     </div>
 
+    <div id="pilihPTModal" class="hidden fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-[100] no-print">
+    <div class="bg-white p-8 rounded-xl shadow-2xl text-center max-w-sm w-full border-4 border-primary">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800 uppercase tracking-widest">PILIH DATABASE</h2>
+        <div class="grid gap-4">
+            <button onclick="setPT('inventaris_p1', 'history_aset')" class="btn btn-primary btn-lg shadow-lg">
+                PT PANRAMA (P1)
+            </button>
+            <button onclick="setPT('inventaris_p2', 'history_p2')" class="btn btn-secondary btn-lg shadow-lg">
+                PT KEDUA (P2)
+            </button>
+        </div>
+    </div>
+</div>
+
     <div id="print-label-area" class="print-only-label"></div>
 
     <div class="main-content hidden">
@@ -433,7 +447,7 @@ thead th {
 
         async function fetchData() {
             try {
-                const { data: result, error } = await supabaseClient.from('inventaris').select('*').order('id_aset', { ascending: true });
+                const { data: result, error } = await supabaseClient.from(currentTable).select('*').order('id_aset', { ascending: true });
                 if (error) throw error;
 				data = result;
                 document.getElementById('statusConnection').innerText = "Terhubung";
@@ -484,7 +498,7 @@ thead th {
     }
     // 2. Kirim ke Supabase menggunakan supabaseClient (sesuai baris 208 kamu)
     const { data: updateResult, error } = await supabaseClient
-        .from('inventaris')
+        .from(currentTable)
         .update({ [kolom]: nilaiClean })
         .eq('id_aset', idAset) // Pastikan kolom di Supabase namanya 'id_aset'
         .select();
@@ -713,7 +727,7 @@ thead th {
                 status: document.getElementById('in_status').value
             };
 
-            const { error } = await supabaseClient.from('inventaris').insert([newData]);
+            const { error } = await supabaseClient.from(currentTable).insert([newData]);
             
             if (error) {
                 alert("Gagal: " + error.message);
@@ -728,7 +742,7 @@ thead th {
 
         async function deleteAsset(id) {
             if (confirm(`Hapus aset ${id}?`)) {
-                await supabaseClient.from('inventaris').delete().eq('id_aset', id);
+                await supabaseClient.from(currentTable).delete().eq('id_aset', id);
                 fetchData();
             }
         }
@@ -749,7 +763,7 @@ thead th {
 
         document.getElementById('searchInput').addEventListener('input', async (e) => {
             const kw = e.target.value.toLowerCase();
-            const { data } = await supabaseClient.from('inventaris').select('*');
+            const { data } = await supabaseClient.from(currentTable).select('*');
             const filtered = data.filter(i => 
                 String(i.user).toLowerCase().includes(kw) || 
                 String(i.id_aset).toLowerCase().includes(kw) ||
@@ -812,7 +826,10 @@ async function handleLogin() {
         err.classList.remove('hidden');
         btn.innerText = "Masuk Sistem";
     } else {
-        checkUser(); // Login sukses, cek ulang status user
+        // Sembunyikan form login
+        document.getElementById('loginSection').classList.add('hidden');
+        // Munculkan modal pilih PT yang baru kita buat tadi
+        document.getElementById('pilihPTModal').classList.remove('hidden');
     }
 }
 
@@ -931,6 +948,21 @@ html5QrcodeScanner.render(onScanSuccess);
     });
 
     alert(daftarLog);
+}
+
+function setPT(tabel, history) {
+    // Set variabel global yang dipakai di fetchData, updateField, dll
+    currentTable = tabel;
+    currentHistory = history;
+
+    // Sembunyikan modal pilih PT
+    document.getElementById('pilihPTModal').classList.add('hidden');
+    
+    // Tampilkan dashboard utama (pastikan id-nya sesuai, di kodinganmu: main-content)
+    document.getElementById('main-content').classList.remove('hidden');
+    
+    // Sekarang baru ambil data dari tabel yang dipilih
+    fetchData();
 }
 
 
