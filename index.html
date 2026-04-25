@@ -712,21 +712,28 @@ thead th {
         function filterByDept(namaDept) {
     console.log("Menyaring departemen:", namaDept);
     
-    // 1. Ambil semua baris data di tabel
-    const rows = document.querySelectorAll('#isiTabelInventaris tr');
+    // GANTI KE inventoryBody sesuai gambar 79122.png
+    const rows = document.querySelectorAll('#inventoryBody tr');
     
+    if (rows.length === 0) {
+        console.log("Baris tabel tidak ditemukan!");
+        return;
+    }
+
     rows.forEach(row => {
-        // Kolom departemen ada di urutan ke-3 (indeks 2)
-        const deptCell = row.cells[2].innerText.toUpperCase();
-        
-        // 2. Sembunyikan yang tidak cocok, tampilkan yang cocok
-        if (deptCell.includes(namaDept.toUpperCase())) {
-            row.style.display = "";
-        } else {
-            row.style.display = "none";
+        // Di tabel kamu (79122.png), DEPT adalah kolom ke-2
+        // Maka kita gunakan cells[1] (indeks mulai dari 0)
+        const cell = row.cells[1]; 
+        if (cell) {
+            const deptCell = cell.innerText.toUpperCase();
+            if (deptCell.includes(namaDept.toUpperCase())) {
+                row.style.display = ""; 
+            } else {
+                row.style.display = "none";
+            }
         }
     });
-		}
+}
 
         function getStatusClass(s) {
             const st = s?.toLowerCase();
