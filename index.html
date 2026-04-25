@@ -546,15 +546,43 @@ checkUser();
             const rows = Array.isArray(items) ? items : [];
             const normalize = (text) => String(text || '').toUpperCase().trim();
 
-            const countByDevice = (keyword) => rows.filter(i =>
-                normalize(i.device).includes(keyword)
-            ).length;
+            // Debug
+            console.log("updateStats - Total rows:", rows.length);
+            if (rows.length > 0) {
+                console.log("Contoh data:", rows[0]);
+            }
 
-            const countByStatus = (tests) => rows.filter(i => {
-                const s = normalize(i.status);
-                return tests.some(test => s === test);
+            document.getElementById('totalAset').innerText = rows.length;
+
+            // Count Laptop
+            const laptopCount = rows.filter(i => {
+                const dev = String(i.device || '').toLowerCase();
+                return dev.includes('laptop');
             }).length;
+            document.getElementById('totalLaptop').innerText = laptopCount;
 
+            // Count Komputer/PC
+            const komputerCount = rows.filter(i => {
+                const dev = String(i.device || '').toLowerCase();
+                return dev.includes('komputer') || dev.includes('pc');
+            }).length;
+            document.getElementById('totalKomputer').innerText = komputerCount;
+
+            // Count Status Aktif
+            const aktifCount = rows.filter(i => {
+                const s = String(i.status || '').toLowerCase();
+                return s === 'active' || s === 'aktif';
+            }).length;
+            document.getElementById('unitAktif').innerText = aktifCount;
+
+            // Count Status Maintenance/Rusak
+            const rusakCount = rows.filter(i => {
+                const s = String(i.status || '').toLowerCase();
+                return s === 'maintenance' || s === 'broken' || s === 'rusak';
+            }).length;
+            document.getElementById('unitRusak').innerText = rusakCount;
+
+            // Department counting
             const deptText = (item) => normalize(item.dept || item.dep);
             const matchDept = (value, patterns) => patterns.some(pattern => pattern.test(value));
 
@@ -579,15 +607,6 @@ checkUser();
                 totalGENERAL_MANAGER: [/GENERAL MANAGER/, /GENARAL MANAGER/],
                 totalIE: [/\bIE\b/, /IE\/PRODUKSI/, /IE\/MANAGER/],
             };
-
-            document.getElementById('totalAset').innerText = rows.length;
-            document.getElementById('totalLaptop').innerText = countByDevice('laptop');
-            document.getElementById('totalKomputer').innerText = rows.filter(i => {
-                const device = normalize(i.device);
-                return device.includes('komputer') || device.includes('pc');
-            }).length;
-            document.getElementById('unitAktif').innerText = countByStatus(['active', 'aktif']);
-            document.getElementById('unitRusak').innerText = countByStatus(['maintenance', 'broken', 'rusak']);
 
             Object.entries(deptCounters).forEach(([id, patterns]) => {
                 const element = document.getElementById(id);
