@@ -201,119 +201,119 @@ thead th {
 </div>     
 
     <div class="stats shadow stat-dept">
-  <div class="stat p-3">
+  <div class="stat p-3" onclick="filterByDept('EXIM')" style="cursor:pointer">
     <div class="stat-title text-xs text-info">EXIM</div>
     <div id="totalEXIM" class="stat-value text-primary text-xl">0</div>
   </div>
 </div>   
             
     <div class="stats shadow stat-dept">
-  <div class="stat p-3">
+  <div class="stat p-3" onclick="filterByDept('FINANCE')" style="cursor:pointer">
     <div class="stat-title text-xs text-info">FINANCE</div>
     <div id="totalFINANCE" class="stat-value text-primary text-xl">0</div>
   </div>
 </div>   
 
     <div class="stats shadow stat-dept">
-  <div class="stat p-3">
+  <div class="stat p-3" onclick="filterByDept('IT')" style="cursor:pointer">
     <div class="stat-title text-xs text-info">IT</div>
     <div id="totalIT" class="stat-value text-primary text-xl">0</div>
   </div>
 </div>   
                 
     <div class="stats shadow stat-dept">
-  <div class="stat p-3">
+  <div class="stat p-3" onclick="filterByDept('INVENTORY')" style="cursor:pointer">
     <div class="stat-title text-xs text-info">IT INV</div>
     <div id="totalINVENTORY" class="stat-value text-primary text-xl">0</div>
   </div>
 </div>   
 
     <div class="stats shadow stat-dept">
-  <div class="stat p-3">
+  <div class="stat p-3" onclick="filterByDept('CAD')" style="cursor:pointer">
     <div class="stat-title text-xs text-info">CAD</div>
     <div id="totalCAD" class="stat-value text-primary text-xl">0</div>
   </div>
 </div> 
 
     <div class="stats shadow stat-dept">
-  <div class="stat p-3">
+  <div class="stat p-3" onclick="filterByDept('GUDANG ACCESSORIES')" style="cursor:pointer">
     <div class="stat-title text-xs text-info">GUDANG ACC</div>
     <div id="totalGUDANG_ACCESSORIES" class="stat-value text-primary text-xl">0</div>
   </div>
 </div> 
     
     <div class="stats shadow stat-dept">
-  <div class="stat p-3">
+  <div class="stat p-3" onclick="filterByDept('GUDANG KAIN')" style="cursor:pointer">
     <div class="stat-title text-xs text-info">GUDANG KAIN</div>
     <div id="totalGUDANG_KAIN" class="stat-value text-primary text-xl">0</div>
   </div>
 </div> 
 
     <div class="stats shadow stat-dept">
-  <div class="stat p-3">
+  <div class="stat p-3" onclick="filterByDept('PACKING')" style="cursor:pointer">
     <div class="stat-title text-xs text-info">PACKING</div>
     <div id="totalPACKING" class="stat-value text-primary text-xl">0</div>
   </div>
 </div> 
 
     <div class="stats shadow stat-dept">
-  <div class="stat p-3">
+  <div class="stat p-3" onclick="filterByDept('SAMPLE PRODUKSI')" style="cursor:pointer">
     <div class="stat-title text-xs text-info">SAMPLE PROD</div>
     <div id="totalSAMPLE_PRODUKSI" class="stat-value text-primary text-xl">0</div>
   </div>
 </div> 
 
     <div class="stats shadow stat-dept">
-  <div class="stat p-3">
+  <div class="stat p-3" onclick="filterByDept('SAMPLE ROOM')" style="cursor:pointer">
     <div class="stat-title text-xs text-info">SAMPLE ROOM</div>
     <div id="totalSAMPLE_ROOM" class="stat-value text-primary text-xl">0</div>
   </div>
 </div> 
 
      <div class="stats shadow stat-dept">
-  <div class="stat p-3">
+  <div class="stat p-3" onclick="filterByDept('MD')" style="cursor:pointer">
     <div class="stat-title text-xs text-info">MD</div>
     <div id="totalMD" class="stat-value text-primary text-xl">0</div>
   </div>
 </div> 
 
     <div class="stats shadow stat-dept">
-  <div class="stat p-3">
+  <div class="stat p-3" onclick="filterByDept('BC')" style="cursor:pointer">
     <div class="stat-title text-xs text-info">BC</div>
     <div id="totalBC" class="stat-value text-primary text-xl">0</div>
   </div>
 </div> 
 
     <div class="stats shadow stat-dept">
-  <div class="stat p-3">
+  <div class="stat p-3" onclick="filterByDept('QA')" style="cursor:pointer">
     <div class="stat-title text-xs text-info">QA</div>
     <div id="totalQA" class="stat-value text-primary text-xl">0</div>
   </div>
 </div> 
 
     <div class="stats shadow stat-dept">
-  <div class="stat p-3">
+  <div class="stat p-3" onclick="filterByDept('FACTORY MANAGER')" style="cursor:pointer">
     <div class="stat-title text-xs text-info">FM</div>
 <div id="totalFACTORY_MANAGER" class="stat-value text-primary text-xl">0</div>
   </div>
 </div> 
     
        <div class="stats shadow stat-dept">
-  <div class="stat p-3">
+  <div class="stat p-3" onclick="filterByDept('GENERAL MANAGER')" style="cursor:pointer">
     <div class="stat-title text-xs text-info">GM</div>
     <div id="totalGENERAL_MANAGER" class="stat-value text-primary text-xl">0</div>
   </div>
 </div> 
 
      <div class="stats shadow stat-dept">
-  <div class="stat p-3">
+  <div class="stat p-3" onclick="filterByDept('IE')" style="cursor:pointer">
     <div class="stat-title text-xs text-info">IE</div>
     <div id="totalIE" class="stat-value text-primary text-xl">0</div>
   </div>
 </div> 
 
     <div class="stats shadow stat-dept">
-  <div class="stat p-3">
+  <div class="stat p-3" onclick="filterByDept('PRODUKSI')" style="cursor:pointer">
     <div class="stat-title text-xs text-info">PRODUKSI</div>
     <div id="totalPRODUKSI" class="stat-value text-primary text-xl">0</div>
   </div>
@@ -605,22 +605,21 @@ checkUser();
         }
 		
         function filterByDept(namaDept) {
-    console.log("Sedang mencari departemen:", namaDept);
+    console.log("Filter departemen:", namaDept);
     
-    // Pastikan ID ini sama dengan yang di HTML (inventoryBody)
     const rows = document.querySelectorAll('#inventoryBody tr');
+    const cariDept = namaDept.toUpperCase();
     
     rows.forEach(row => {
-        // Ambil semua teks dalam satu baris (biar gampang)
-        const isiBaris = row.innerText.toUpperCase();
-        const cari = namaDept.toUpperCase();
-		row.style.display = ""; 
-        row.style.opacity = "1";
+        // Ambil cell departemen (index 2: BARCODE, USER, DEPT)
+        const deptCell = row.cells[2];
+        if (!deptCell) return;
         
-        // Jika ada kata departemennya di baris itu, tampilkan
-        if (isiBaris.includes(cari)) {
+        const deptText = deptCell.innerText.toUpperCase().trim();
+        
+        // Tampilkan jika departemen cocok
+        if (deptText.includes(cariDept)) {
             row.style.display = "";
-            row.style.opacity = "1"; // Tambahan biar jelas tampil
         } else {
             row.style.display = "none";
         }
