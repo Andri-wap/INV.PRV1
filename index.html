@@ -438,21 +438,35 @@ thead th {
         let currentHistory = '';
 		let data = [];
         let asetIdSedangDiproses = null;
+		
      async function checkUser() {
     const { data: { session } } = await supabaseClient.auth.getSession();
+
     const loginSec = document.getElementById('loginSection');
     const pilihModal = document.getElementById('pilihPTModal');
     const mainContent = document.getElementById('main-content');
 
     if (session) {
+        // 1. Sembunyikan form login jika sesi ada
         if (loginSec) loginSec.classList.add('hidden');
-        if (pilihModal) pilihModal.classList.remove('hidden');
-        if (mainContent) mainContent.classList.add('hidden');
+        
+        // 2. Logika tampilan setelah login:
+        if (!currentTable) {
+            // Jika belum pilih PT, munculkan modal pilih PT
+            if (pilihModal) pilihModal.classList.remove('hidden');
+            if (mainContent) mainContent.classList.add('hidden');
+        } else {
+            // Jika sudah pilih PT (setelah reload), langsung ke dashboard
+            if (pilihModal) pilihModal.classList.add('hidden');
+            if (mainContent) mainContent.classList.remove('hidden');
+        }
     } else {
+        // 3. Jika tidak ada sesi, wajib login
         if (loginSec) loginSec.classList.remove('hidden');
         if (pilihModal) pilihModal.classList.add('hidden');
+        if (mainContent) mainContent.classList.add('hidden');
     }
-} // <--- Tutup checkUser
+}
         
       function toggleForm() {
             document.getElementById('formContainer').classList.toggle('hidden');
