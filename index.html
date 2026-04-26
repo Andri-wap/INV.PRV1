@@ -9,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
@@ -349,6 +350,9 @@ thead th {
             <div class="flex flex-wrap gap-2 mb-6 no-print">
                 <button onclick="toggleForm()" class="btn btn-primary text-white">+ Tambah Aset</button>
                 <button onclick="window.print()" class="btn btn-outline btn-secondary">Cetak Laporan</button>
+				<button onclick="exportToExcel()" class="btn btn-success btn-sm gap-2">
+                <i class="fas fa-file-excel"></i> Export Excel
+</button>
             </div>
 
             <div id="formContainer" class="card bg-base-100 shadow-xl mb-8 no-print hidden">
@@ -671,6 +675,23 @@ checkUser();
                 row.style.display = pattern.test(deptText) ? '' : 'none';
             });
         }
+
+		function exportToExcel() {
+    // 1. Ambil data dari tabel yang saat ini tampil (termasuk yang sudah di-filter)
+    const table = document.querySelector("table");
+    
+    // 2. Buat workbook baru
+    const wb = XLSX.utils.table_to_book(table, { sheet: "Data Inventaris" });
+    
+    // 3. Ambil tanggal hari ini buat nama file
+    const date = new Date().toISOString().slice(0, 10);
+    const fileName = `Inventaris_IT_${date}.xlsx`;
+    
+    // 4. Download filenya
+    XLSX.writeFile(wb, fileName);
+    
+    console.log("File Excel berhasil didownload!");
+}
 
 		function resetFilter() {
     console.log("Tombol Total Aset diklik, meriset filter...");
