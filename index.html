@@ -138,6 +138,30 @@ thead th {
     background-color: #06b477;
     transform: scale(1.05);
 }
+
+		/* Efek denyut buat badge Maintenance */
+.badge-warning {
+    animation: pulse-yellow 2s infinite;
+    border: none;
+}
+
+/* Efek denyut buat badge Aktif biar kelihatan 'Live' */
+.badge-success {
+    animation: pulse-green 3s infinite;
+    border: none;
+}
+
+@keyframes pulse-yellow {
+    0% { box-shadow: 0 0 0 0px rgba(251, 189, 35, 0.7); }
+    70% { box-shadow: 0 0 0 6px rgba(251, 189, 35, 0); }
+    100% { box-shadow: 0 0 0 0px rgba(251, 189, 35, 0); }
+}
+
+@keyframes pulse-green {
+    0% { box-shadow: 0 0 0 0px rgba(54, 211, 153, 0.7); }
+    70% { box-shadow: 0 0 0 6px rgba(54, 211, 153, 0); }
+    100% { box-shadow: 0 0 0 0px rgba(54, 211, 153, 0); }
+}
         
     </style>
 </head>
