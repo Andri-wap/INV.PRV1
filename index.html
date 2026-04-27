@@ -647,7 +647,7 @@ checkUser();
                 totalIE: [/\bIE\b/, /IE\/PRODUKSI/, /IE\/MANAGER/],
 				totalCUTTING: [/\bCUTTING\b/],
 				totalDIGITAL: [/\bDIGITAL\b/],
-				totalPRODUKSI: [/\bPRODUKSI\b/, /PRODUKSI/,/PRODUKSI\/MANAGER/],
+				totalPRODUKSI: [/\bPRODUKSI\b/, /PRODUKSI/,/PRODUKSI\MANAGER/],
             };
 
             Object.entries(deptCounters).forEach(([id, patterns]) => {
@@ -686,7 +686,7 @@ checkUser();
                 'FACTORY MANAGER': /FACTORY MANAGER/i,
                 'GENERAL MANAGER': /GENERAL MANAGER|GENARAL MANAGER/i,
                 IE: /\bIE\b|IE\/PRODUKSI|IE\/MANAGER/i,
-                PRODUKSI: /\bPRODUKSI\b|PRODUKSI\/MANAGER/i,
+                PRODUKSI: /\bPRODUKSI\b|PRODUKSI\MANAGER/i,
 				CUTTING: /\bCUTTING\b/i,
 				DIGITAL: /\bDIGITAL\b/i,
             };
